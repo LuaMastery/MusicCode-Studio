@@ -119,6 +119,7 @@ function Item({ label, mono, onPlay, onInsert }: { label: string; mono: string; 
   return (
     <div className="group flex items-center gap-1 px-2 py-1 hover:bg-[#1a1a22]">
       <button
+        data-sfx="none"
         title="Ouvir"
         onClick={onPlay}
         className="w-6 h-6 flex items-center justify-center rounded bg-[#7c5cff] hover:bg-[#6d4df0] text-white shrink-0"

@@ -70,6 +70,7 @@ export function EditorTabs({
         </div>
 
         <button
+          data-sfx={playing ? "close" : "play"}
           onClick={playing ? onStop : onPlay}
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-[12px] font-bold text-white transition-colors ${
             playing ? "bg-[#a1260d] hover:bg-[#c43319]" : "bg-[#7c5cff] hover:bg-[#6d4df0]"

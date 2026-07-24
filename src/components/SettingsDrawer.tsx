@@ -16,6 +16,7 @@ const BG_OPTIONS: { id: BgType; label: string; icon: string }[] = [
 function Toggle({ on, onChange }: { on: boolean; onChange: (v: boolean) => void }) {
   return (
     <button
+      data-sfx="toggle"
       onClick={() => onChange(!on)}
       className={`relative w-10 h-6 rounded-full transition-colors shrink-0 ${on ? "" : "bg-white/10"}`}
       style={on ? { background: "var(--color-brand)" } : undefined}
@@ -45,13 +46,13 @@ export function SettingsDrawer() {
   return (
     <div className="fixed inset-0 z-[100] flex justify-end">
       {/* overlay */}
-      <div className="absolute inset-0 bg-black/60 animate-overlayIn" onClick={closeDrawer} />
+      <div className="absolute inset-0 bg-black/60 animate-overlayIn" data-sfx="close" onClick={closeDrawer} />
 
       {/* painel */}
       <aside className="relative w-[340px] max-w-[90vw] bg-panel border-l border-line h-full overflow-auto animate-slideIn shadow-2xl">
         <div className="sticky top-0 bg-panel/90 backdrop-blur border-b border-line px-5 h-14 flex items-center justify-between z-10">
           <h2 className="text-[15px] font-bold text-white">Aparência</h2>
-          <button onClick={closeDrawer} className="text-muted hover:text-white"><X size={18} /></button>
+          <button onClick={closeDrawer} data-sfx="close" className="text-muted hover:text-white"><X size={18} /></button>
         </div>
 
         <div className="p-5 space-y-6">
@@ -124,6 +125,25 @@ export function SettingsDrawer() {
                 onChange={(e) => update({ editorFontSize: Number(e.target.value) })}
                 className="w-28 accent-[var(--color-brand)]" />
             </Row>
+          </section>
+
+          {/* Som */}
+          <section>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-faint mb-3">Efeitos sonoros</h3>
+            <Row title="Ativar sons da interface" desc="Cliques, painéis e transições.">
+              <Toggle on={settings.sfxEnabled} onChange={(v) => update({ sfxEnabled: v })} />
+            </Row>
+            <Row title={`Volume · ${Math.round(settings.sfxVolume * 100)}%`}>
+              <input type="range" min={0} max={1} step={0.01} value={settings.sfxVolume}
+                onChange={(e) => update({ sfxVolume: Number(e.target.value) })}
+                className="w-28 accent-[var(--color-brand)]" />
+            </Row>
+            <button
+              data-sfx="success"
+              className="mt-2 w-full py-2 rounded-lg text-[12px] font-medium text-white border border-line hover:bg-white/[0.04] transition-colors"
+            >
+              🔊 Testar som
+            </button>
           </section>
 
           {/* Arquivos */}

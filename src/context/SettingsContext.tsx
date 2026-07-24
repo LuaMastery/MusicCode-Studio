@@ -31,6 +31,8 @@ interface Settings {
   reduceMotion: boolean;
   editorFontSize: number;   // 11 .. 20
   autoSave: boolean;
+  sfxEnabled: boolean;
+  sfxVolume: number;        // 0 .. 1
 }
 
 const LS_KEY = "musiccode.settings.v1";
@@ -44,6 +46,8 @@ const DEFAULTS: Settings = {
   reduceMotion: false,
   editorFontSize: 13,
   autoSave: false,
+  sfxEnabled: true,
+  sfxVolume: 0.4,
 };
 
 function load(): Settings {

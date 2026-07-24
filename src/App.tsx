@@ -12,12 +12,14 @@ import { BackgroundFX } from "./components/BackgroundFX";
 import { SettingsDrawer } from "./components/SettingsDrawer";
 import { Logo } from "./components/Logo";
 import { useSettings } from "./context/SettingsContext";
+import { useSfxGlobal } from "./hooks/useSfxGlobal";
 
 export type Page = "home" | "studio" | "html" | "about";
 
 export default function App() {
   const { accent, openDrawer } = useSettings();
   const [page, setPage] = useState<Page>("home");
+  useSfxGlobal();
 
   const navigate = (p: Page) => {
     setPage(p);
@@ -52,6 +54,7 @@ export default function App() {
               return (
                 <button
                   key={n.id}
+                  data-sfx="nav"
                   onClick={() => navigate(n.id)}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[13px] font-medium transition-all ${
                     active ? "text-white bg-white/[0.06]" : "text-muted hover:text-white"
@@ -65,6 +68,7 @@ export default function App() {
           </nav>
 
           <button
+            data-sfx="open"
             onClick={openDrawer}
             title="Aparência"
             className="ml-auto flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[13px] font-medium text-muted hover:text-white border border-line hover:bg-white/[0.04] transition-all"
