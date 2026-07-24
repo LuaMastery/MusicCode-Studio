@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:pages": "node scripts/build-pages.mjs",
     "preview": "vite preview",
     "deploy": "npm run build && gh-pages -d dist",
     "test": "mkdir -p scripts/out && node node_modules/esbuild/bin/esbuild scripts/test-theory.ts --bundle --platform=node --format=esm --outfile=scripts/out/theory.mjs && node node_modules/esbuild/bin/esbuild scripts/test-api.ts --bundle --platform=node --format=esm --outfile=scripts/out/api.mjs && node scripts/out/theory.mjs && node scripts/out/api.mjs",

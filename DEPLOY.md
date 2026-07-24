@@ -19,6 +19,41 @@ Isso é **100% compatível com o GitHub Pages**.
 
 ---
 
+## ✅ Método recomendado — Pasta `/docs`
+
+Este método mantém o código-fonte limpo (o `npm run dev` segue funcionando) e publica
+o site pronto a partir da pasta `/docs`. É o método mais simples e confiável.
+
+### 1. Gerar o build de Pages
+
+```bash
+npm run build:pages      # gera a pasta docs/ (index.html autossuficiente + .nojekyll)
+```
+
+> Esse comando compila o app num único `docs/index.html` e adiciona o `.nojekyll`.
+
+### 2. Apontar o GitHub Pages para a pasta `/docs`
+
+1. No repositório, vá em **Settings → Pages**
+2. Em **Source → Deploy from a branch**:
+   - **Branch:** `main` (após o merge do PR) — *ou* `arena/019f9607-musiccode-studio` para ver agora
+   - **Pasta:** selecione **`/docs`** (não `/root`)
+3. Clique em **Save**
+
+> ⚠️ Importante: a configuração antiga apontava para **`/` (root)**, que serve o
+> `index.html` fonte (não executável) — por isso o site ficava em branco.
+> Usar a pasta **`/docs`** resolve isso.
+
+### 3. Aguardar o build
+
+Em 1–2 minutos o site estará no ar em:
+
+```
+https://luamastery.github.io/MusicCode-Studio/
+```
+
+---
+
 ## 📋 Passo a Passo
 
 ### 1. Instalar as dependências
