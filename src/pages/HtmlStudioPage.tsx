@@ -122,7 +122,16 @@ export function HtmlStudioPage() {
           </div>
 
           {!preview ? (
-            <CodeEditor value={code} onChange={setCode} filename={`${selected.id}.html`} accent="#ec4899" minHeight={520} />
+            <div className="rounded-2xl border border-white/10 overflow-hidden">
+              <div className="flex items-center gap-2 px-4 py-2.5 bg-[#161b22] border-b border-white/10">
+                <span className="w-3 h-3 rounded-full bg-red-500/80" />
+                <span className="w-3 h-3 rounded-full bg-yellow-500/80" />
+                <span className="w-3 h-3 rounded-full bg-green-500/80" />
+                <span className="ml-3 text-xs text-gray-500 font-mono">{selected.id}.html</span>
+                <span className="ml-auto text-[10px] font-bold px-2 py-0.5 rounded-full border border-pink-500/30 bg-pink-500/10 text-pink-400">🌐 HTML</span>
+              </div>
+              <CodeEditor value={code} onChange={setCode} language="text" minHeight={520} />
+            </div>
           ) : (
             <div className="rounded-2xl border border-emerald-500/20 overflow-hidden bg-white">
               <div className="flex items-center gap-2 px-4 py-2.5 bg-[#161b22] border-b border-emerald-500/20">

@@ -1,67 +1,127 @@
 /**
- * CodeEditor — editor de código simples com numeração de linhas,
- * suporte a Tab e tema escuro. Foco em confiabilidade (som primeiro).
+ * CodeEditor — editor estilo VS Code.
+ * Realce de sintaxe via pano de fundo (<pre>) sobre um <textarea> transparente,
+ * com gutter de numeração de linhas e cursor (Ln, Col) rastreado.
+ *
+ * - language="js"  → realce de sintaxe JavaScript (tema Dark+)
+ * - language="text"→ texto puro (para HTML/outros)
+ * - minHeight      → quando informado, usa altura fixa (caso contrário preenche o container)
  */
 import { useMemo, useRef } from "react";
+import { highlightJS } from "../utils/highlight";
 
 interface Props {
   value: string;
   onChange: (v: string) => void;
-  filename?: string;
-  accent?: string;
+  onCursor?: (ln: number, col: number) => void;
+  fontSize?: number;
+  language?: "js" | "text";
   minHeight?: number;
 }
 
-export function CodeEditor({ value, onChange, filename = "codigo.js", accent = "#a855f7", minHeight = 460 }: Props) {
+const FONT_STACK = '"Menlo", "Monaco", "Consolas", "Courier New", monospace';
+
+function escapePlain(s: string): string {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+export function CodeEditor({ value, onChange, onCursor, fontSize = 13, language = "js", minHeight }: Props) {
   const taRef = useRef<HTMLTextAreaElement>(null);
+  const preRef = useRef<HTMLPreElement>(null);
+  const gutterRef = useRef<HTMLDivElement>(null);
 
   const lineCount = useMemo(() => value.split("\n").length, [value]);
+  const lineHeight = Math.round(fontSize * 1.5);
+  const html = useMemo(
+    () => (language === "js" ? highlightJS(value) : escapePlain(value)) + "\n",
+    [value, language]
+  );
+
+  const syncScroll = () => {
+    const ta = taRef.current;
+    if (!ta) return;
+    if (preRef.current) {
+      preRef.current.scrollTop = ta.scrollTop;
+      preRef.current.scrollLeft = ta.scrollLeft;
+    }
+    if (gutterRef.current) gutterRef.current.scrollTop = ta.scrollTop;
+  };
+
+  const handleCursor = () => {
+    const ta = taRef.current;
+    if (!ta || !onCursor) return;
+    const upto = ta.value.slice(0, ta.selectionStart);
+    const parts = upto.split("\n");
+    onCursor(parts.length, parts[parts.length - 1].length + 1);
+  };
 
   const handleKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Tab") {
       e.preventDefault();
-      const el = e.currentTarget;
-      const start = el.selectionStart;
-      const end = el.selectionEnd;
-      const next = value.slice(0, start) + "  " + value.slice(end);
+      const ta = e.currentTarget;
+      const s = ta.selectionStart;
+      const en = ta.selectionEnd;
+      const next = value.slice(0, s) + "  " + value.slice(en);
       onChange(next);
       requestAnimationFrame(() => {
-        el.selectionStart = el.selectionEnd = start + 2;
+        ta.selectionStart = ta.selectionEnd = s + 2;
+        syncScroll();
+        handleCursor();
       });
     }
   };
 
+  const shared = {
+    fontFamily: FONT_STACK,
+    fontSize,
+    lineHeight: `${lineHeight}px`,
+    tabSize: 2,
+    margin: 0,
+    border: 0,
+    whiteSpace: "pre" as const,
+  };
+
+  const rootStyle = minHeight ? { height: minHeight } : undefined;
+  const rootClass = minHeight ? "flex bg-[#1e1e1e]" : "flex flex-1 min-h-0 bg-[#1e1e1e]";
+
   return (
-    <div className="rounded-2xl border border-white/10 overflow-hidden bg-[#0d1117] flex flex-col">
-      <div className="flex items-center gap-2 px-4 py-2.5 bg-[#161b22] border-b border-white/10">
-        <span className="w-3 h-3 rounded-full bg-red-500/80" />
-        <span className="w-3 h-3 rounded-full bg-yellow-500/80" />
-        <span className="w-3 h-3 rounded-full bg-green-500/80" />
-        <span className="ml-3 text-xs text-gray-500 font-mono">{filename}</span>
-        <span
-          className="ml-auto text-[10px] font-bold px-2 py-0.5 rounded-full border"
-          style={{ color: accent, borderColor: `${accent}55`, background: `${accent}1a` }}
-        >
-          ✏️ editável
-        </span>
+    <div className={rootClass} style={rootStyle}>
+      {/* Gutter */}
+      <div
+        ref={gutterRef}
+        className="overflow-hidden select-none bg-[#1e1e1e] text-right text-[#858585] shrink-0"
+        style={{ width: 56, paddingTop: 12, paddingBottom: 12, paddingRight: 12, ...shared }}
+      >
+        {Array.from({ length: lineCount }, (_, i) => (
+          <div key={i} style={{ height: lineHeight }}>{i + 1}</div>
+        ))}
       </div>
-      <div className="flex" style={{ minHeight }}>
-        <div
-          className="select-none text-right py-4 px-3 text-xs font-mono text-gray-600 bg-[#0d1117] border-r border-white/5 overflow-hidden"
-          style={{ minWidth: 44 }}
+
+      {/* Código */}
+      <div className="relative flex-1 min-w-0">
+        <pre
+          ref={preRef}
+          aria-hidden
+          className="absolute inset-0 overflow-hidden m-0 pointer-events-none"
+          style={{ ...shared, padding: "12px 16px", color: "#d4d4d4" }}
         >
-          {Array.from({ length: lineCount }, (_, i) => (
-            <div key={i} style={{ height: "1.6em", lineHeight: "1.6em" }}>{i + 1}</div>
-          ))}
-        </div>
+          <code dangerouslySetInnerHTML={{ __html: html }} />
+        </pre>
         <textarea
           ref={taRef}
           value={value}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(e) => { onChange(e.target.value); syncScroll(); handleCursor(); }}
+          onScroll={syncScroll}
           onKeyDown={handleKey}
+          onKeyUp={handleCursor}
+          onClick={handleCursor}
+          onSelect={handleCursor}
           spellCheck={false}
-          className="flex-1 w-full bg-[#0d1117] text-gray-100 font-mono text-sm p-4 resize-none outline-none leading-[1.6] custom-scroll"
-          style={{ minHeight }}
+          autoCapitalize="off"
+          autoCorrect="off"
+          wrap="off"
+          className="absolute inset-0 w-full h-full resize-none outline-none bg-transparent overflow-auto"
+          style={{ ...shared, padding: "12px 16px", color: "transparent", caretColor: "#aeafad", WebkitTextFillColor: "transparent" }}
         />
       </div>
     </div>
