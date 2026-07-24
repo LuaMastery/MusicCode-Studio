@@ -1,48 +1,102 @@
 /**
- * SettingsContext — preferências globais (cor de destaque).
- * Paleta minimalista e refinada; violeta por padrão.
+ * SettingsContext — preferências globais de design + estado da gaveta de ajustes.
+ * Tudo é persistido em localStorage, então o usuário configura "o quanto quiser".
  */
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+
+export type BgType = "none" | "particles" | "waves" | "aurora";
 
 export interface Accent {
   id: string;
   name: string;
   hex: string;
-  text: string;
-  bg: string;
-  ring: string;
-  border: string;
-  gradient: string;
 }
 
-const ACCENTS: Accent[] = [
-  { id: "violet",  name: "Violeta",  hex: "#8b5cf6", text: "text-violet-400",  bg: "bg-violet-500/10",  ring: "ring-violet-500/40",  border: "border-violet-500/30",  gradient: "from-violet-500 to-violet-700" },
-  { id: "indigo",  name: "Índigo",   hex: "#6366f1", text: "text-indigo-400",  bg: "bg-indigo-500/10",  ring: "ring-indigo-500/40",  border: "border-indigo-500/30",  gradient: "from-indigo-500 to-indigo-700" },
-  { id: "blue",    name: "Azul",     hex: "#3b82f6", text: "text-blue-400",    bg: "bg-blue-500/10",    ring: "ring-blue-500/40",    border: "border-blue-500/30",    gradient: "from-blue-500 to-blue-700" },
-  { id: "emerald", name: "Esmeralda",hex: "#10b981", text: "text-emerald-400", bg: "bg-emerald-500/10", ring: "ring-emerald-500/40", border: "border-emerald-500/30", gradient: "from-emerald-500 to-emerald-700" },
-  { id: "rose",    name: "Rosa",     hex: "#f43f5e", text: "text-rose-400",    bg: "bg-rose-500/10",    ring: "ring-rose-500/40",    border: "border-rose-500/30",    gradient: "from-rose-500 to-rose-700" },
+const PRESETS: Accent[] = [
+  { id: "violet",  name: "Violeta",   hex: "#8b5cf6" },
+  { id: "indigo",  name: "Índigo",    hex: "#6366f1" },
+  { id: "blue",    name: "Azul",      hex: "#3b82f6" },
+  { id: "cyan",    name: "Ciano",     hex: "#06b6d4" },
+  { id: "emerald", name: "Esmeralda", hex: "#10b981" },
+  { id: "rose",    name: "Rosa",      hex: "#f43f5e" },
+  { id: "amber",   name: "Âmbar",     hex: "#f59e0b" },
 ];
 
-interface SettingsValue {
-  accent: Accent;
-  accents: Accent[];
-  setAccent: (id: string) => void;
+interface Settings {
+  accentId: string;
+  customAccent: string | null;
+  bgType: BgType;
+  bgEnabled: boolean;
+  bgSpeed: number;          // 0.3 .. 2
+  reduceMotion: boolean;
+  editorFontSize: number;   // 11 .. 20
+  autoSave: boolean;
 }
 
-const SettingsContext = createContext<SettingsValue | null>(null);
+const LS_KEY = "musiccode.settings.v1";
+
+const DEFAULTS: Settings = {
+  accentId: "violet",
+  customAccent: null,
+  bgType: "particles",
+  bgEnabled: true,
+  bgSpeed: 1,
+  reduceMotion: false,
+  editorFontSize: 13,
+  autoSave: false,
+};
+
+function load(): Settings {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (!raw) return DEFAULTS;
+    return { ...DEFAULTS, ...(JSON.parse(raw) as Partial<Settings>) };
+  } catch {
+    return DEFAULTS;
+  }
+}
+
+interface SettingsValue {
+  settings: Settings;
+  update: (partial: Partial<Settings>) => void;
+  reset: () => void;
+  presets: Accent[];
+  accent: Accent;        // resolvido (custom ou preset)
+  drawerOpen: boolean;
+  openDrawer: () => void;
+  closeDrawer: () => void;
+}
+
+const Ctx = createContext<SettingsValue | null>(null);
 
 export function SettingsProvider({ children }: { children: ReactNode }) {
-  const [accentId, setAccentId] = useState("violet");
-  const accent = ACCENTS.find((a) => a.id === accentId) ?? ACCENTS[0];
+  const [settings, setSettings] = useState<Settings>(load);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  useEffect(() => {
+    try { localStorage.setItem(LS_KEY, JSON.stringify(settings)); } catch { /* */ }
+  }, [settings]);
+
+  const update = (partial: Partial<Settings>) => setSettings((s) => ({ ...s, ...partial }));
+  const reset = () => setSettings(DEFAULTS);
+
+  const accent = useMemo<Accent>(() => {
+    const preset = PRESETS.find((a) => a.id === settings.accentId) ?? PRESETS[0];
+    return { ...preset, hex: settings.customAccent || preset.hex };
+  }, [settings.accentId, settings.customAccent]);
+
   return (
-    <SettingsContext.Provider value={{ accent, accents: ACCENTS, setAccent: setAccentId }}>
+    <Ctx.Provider value={{
+      settings, update, reset, presets: PRESETS, accent,
+      drawerOpen, openDrawer: () => setDrawerOpen(true), closeDrawer: () => setDrawerOpen(false),
+    }}>
       {children}
-    </SettingsContext.Provider>
+    </Ctx.Provider>
   );
 }
 
 export function useSettings(): SettingsValue {
-  const ctx = useContext(SettingsContext);
+  const ctx = useContext(Ctx);
   if (!ctx) throw new Error("useSettings deve ser usado dentro de SettingsProvider");
   return ctx;
 }

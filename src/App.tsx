@@ -1,18 +1,22 @@
 /**
  * App — shell minimalista do MusicCode Studio.
+ * Logo + navegação + fundo animado + gaveta de aparência.
  */
 import { useState } from "react";
-import { Music2, Home, Code2, Globe, BookOpen } from "lucide-react";
+import { Home, Code2, Globe, BookOpen, SlidersHorizontal } from "lucide-react";
 import { HomePage } from "./pages/HomePage";
 import { StudioPage } from "./pages/StudioPage";
 import { HtmlStudioPage } from "./pages/HtmlStudioPage";
 import { AboutPage } from "./pages/AboutPage";
+import { BackgroundFX } from "./components/BackgroundFX";
+import { SettingsDrawer } from "./components/SettingsDrawer";
+import { Logo } from "./components/Logo";
 import { useSettings } from "./context/SettingsContext";
 
 export type Page = "home" | "studio" | "html" | "about";
 
 export default function App() {
-  const { accent, accents, setAccent } = useSettings();
+  const { accent, openDrawer } = useSettings();
   const [page, setPage] = useState<Page>("home");
 
   const navigate = (p: Page) => {
@@ -28,17 +32,14 @@ export default function App() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-ink">
+    <div className="min-h-screen flex flex-col relative">
+      <BackgroundFX />
+
       {/* NAV */}
       <header className="sticky top-0 z-40 backdrop-blur-xl bg-ink/70 border-b border-line">
         <div className="max-w-6xl mx-auto px-5 h-14 flex items-center gap-6">
           <button onClick={() => navigate("home")} className="flex items-center gap-2.5 shrink-0">
-            <span
-              className="w-7 h-7 rounded-lg flex items-center justify-center shadow-lg"
-              style={{ background: accent.hex, boxShadow: `0 4px 20px -4px ${accent.hex}` }}
-            >
-              <Music2 size={15} className="text-white" />
-            </span>
+            <Logo size={28} color={accent.hex} />
             <span className="font-bold text-[15px] tracking-tight text-white">
               MusicCode<span className="text-muted"> Studio</span>
             </span>
@@ -63,25 +64,19 @@ export default function App() {
             })}
           </nav>
 
-          {/* Acentos (pontos minimalistas) */}
-          <div className="ml-auto hidden md:flex items-center gap-1.5">
-            {accents.map((a) => (
-              <button
-                key={a.id}
-                title={a.name}
-                onClick={() => setAccent(a.id)}
-                className={`w-3.5 h-3.5 rounded-full transition-all ${
-                  accent.id === a.id ? "ring-2 ring-offset-2 ring-offset-ink scale-110" : "opacity-50 hover:opacity-100"
-                }`}
-                style={{ background: a.hex, boxShadow: accent.id === a.id ? `0 0 0 1px ${a.hex}` : undefined }}
-              />
-            ))}
-          </div>
+          <button
+            onClick={openDrawer}
+            title="Aparência"
+            className="ml-auto flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[13px] font-medium text-muted hover:text-white border border-line hover:bg-white/[0.04] transition-all"
+          >
+            <SlidersHorizontal size={14} />
+            <span className="hidden sm:block">Aparência</span>
+          </button>
         </div>
       </header>
 
       {/* PÁGINA */}
-      <main className="flex-1">
+      <main className="flex-1 relative z-10">
         {page === "home" && <HomePage navigate={navigate} />}
         {page === "studio" && <StudioPage />}
         {page === "html" && <HtmlStudioPage />}
@@ -89,11 +84,13 @@ export default function App() {
       </main>
 
       {/* FOOTER */}
-      <footer className="border-t border-line py-6">
+      <footer className="relative z-10 border-t border-line py-6">
         <p className="text-center text-xs text-faint">
           MusicCode Studio · Crie música com programação · feito com Web Audio API
         </p>
       </footer>
+
+      <SettingsDrawer />
     </div>
   );
 }

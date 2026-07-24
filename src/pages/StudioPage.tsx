@@ -1,7 +1,8 @@
 /**
  * StudioPage — IDE estilo VS Code.
- * Barra de atividades (visões) + painel lateral (Explorador/Buscar/Música/Config)
+ * Barra de atividades (visões) + painel lateral (Explorador/Buscar/Música)
  * + editor com abas + painel inferior (terminal) + barra de status.
+ * Preferências de design vêm do SettingsContext global.
  */
 import { useRef, useState } from "react";
 import { CodeEditor, type CodeEditorHandle } from "../components/CodeEditor";
@@ -9,16 +10,16 @@ import { ActivityBar } from "../components/ActivityBar";
 import { Explorer } from "../components/Explorer";
 import { SearchPanel } from "../components/SearchPanel";
 import { MusicPanel } from "../components/MusicPanel";
-import { SettingsPanel } from "../components/SettingsPanel";
 import { EditorTabs } from "../components/EditorTabs";
 import { BottomPanel, type PanelTab } from "../components/BottomPanel";
 import { StatusBar } from "../components/StatusBar";
 import { useMusicFiles } from "../hooks/useMusicFiles";
+import { useSettings } from "../context/SettingsContext";
 import { engine } from "../engine/engine";
 import { runCode, stopAll } from "../engine/runner";
 import { SYNTH_ALIASES } from "../engine/instruments";
 
-type View = "explorer" | "search" | "music" | "settings";
+type View = "explorer" | "search" | "music";
 
 function formatArg(a: unknown): string {
   if (typeof a === "string") return a;
@@ -36,7 +37,8 @@ function readFromCode(code: string): { synth: string; bpm: number | null } {
 }
 
 export function StudioPage() {
-  const store = useMusicFiles();
+  const { settings, openDrawer } = useSettings();
+  const store = useMusicFiles(settings.autoSave);
   const { active, activeId, userFiles, exampleFiles, dirtyIds } = store;
 
   const [playing, setPlaying] = useState(false);
@@ -50,7 +52,6 @@ export function StudioPage() {
   const [activeBar, setActiveBar] = useState("explorer");
   const [bottomTab, setBottomTab] = useState<PanelTab>("terminal");
   const [bottomCollapsed, setBottomCollapsed] = useState(false);
-  const [fontSize, setFontSize] = useState(13);
 
   const editorRef = useRef<CodeEditorHandle>(null);
 
@@ -62,6 +63,10 @@ export function StudioPage() {
       setActiveBar("run");
       setBottomTab("terminal");
       setBottomCollapsed(false);
+      return;
+    }
+    if (id === "settings") {
+      openDrawer();
       return;
     }
     if (sidebarVisible && view === id) {
@@ -95,7 +100,7 @@ export function StudioPage() {
   };
 
   return (
-    <div className="flex flex-col bg-[#0d0d12] text-white overflow-hidden" style={{ height: "calc(100vh - 4rem)" }}>
+    <div className="flex flex-col bg-panel text-white overflow-hidden relative z-10" style={{ height: "calc(100vh - 3.5rem)" }}>
       <div className="flex flex-1 min-h-0">
         <ActivityBar active={activeBar} onSelect={handleActivity} />
 
@@ -117,15 +122,6 @@ export function StudioPage() {
           <SearchPanel files={store.files} onOpen={(f) => store.open(f.id)} />
         )}
         {sidebarVisible && view === "music" && <MusicPanel onInsert={handleInsert} />}
-        {sidebarVisible && view === "settings" && (
-          <SettingsPanel
-            autoSave={store.autoSave}
-            onAutoSave={store.setAutoSave}
-            fontSize={fontSize}
-            onFontSize={setFontSize}
-            onClearFiles={store.clearUserFiles}
-          />
-        )}
 
         {/* Coluna do editor */}
         <div className="flex flex-col flex-1 min-w-0">
@@ -151,7 +147,7 @@ export function StudioPage() {
             onChange={store.updateCode}
             onCursor={(ln, col) => setCursor({ ln, col })}
             onSave={store.save}
-            fontSize={fontSize}
+            fontSize={settings.editorFontSize}
           />
 
           <BottomPanel

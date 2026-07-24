@@ -57,7 +57,7 @@ function persistUserFiles(files: MusicFile[]): void {
   }
 }
 
-export function useMusicFiles() {
+export function useMusicFiles(autoSave: boolean) {
   const exampleFiles = useMemo<MusicFile[]>(
     () => TEMPLATES.map((t) => ({ id: "ex:" + t.id, name: t.id, code: t.code, kind: "example", icon: t.icon })),
     []
@@ -76,13 +76,6 @@ export function useMusicFiles() {
     loadUserFiles().forEach((f) => (m[f.id] = f.code));
     return m;
   });
-  const [autoSave, setAutoSave] = useState<boolean>(
-    () => { try { return localStorage.getItem("musiccode.autosave") === "1"; } catch { return false; } }
-  );
-
-  useEffect(() => {
-    try { localStorage.setItem("musiccode.autosave", autoSave ? "1" : "0"); } catch { /* */ }
-  }, [autoSave]);
 
   // Salvamento automático: persiste arquivos do usuário sempre que mudarem.
   useEffect(() => {
@@ -204,7 +197,7 @@ export function useMusicFiles() {
   const userFiles = files.filter((f) => f.kind === "user");
 
   return {
-    files, userFiles, exampleFiles, active, activeId, dirtyIds, autoSave,
-    setAutoSave, open, updateCode, createFile, save, resetActive, rename, remove, duplicate, clearUserFiles,
+    files, userFiles, exampleFiles, active, activeId, dirtyIds,
+    open, updateCode, createFile, save, resetActive, rename, remove, duplicate, clearUserFiles,
   };
 }

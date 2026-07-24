@@ -60,3 +60,17 @@ body {
 
 @keyframes pulseGlow { 0%,100% { opacity: 0.5; } 50% { opacity: 0.9; } }
 .animate-pulseGlow { animation: pulseGlow 4s ease-in-out infinite; }
+
+/* Barras do logo (equalizador animado) */
+@keyframes eq { 0%, 100% { transform: scaleY(0.45); } 50% { transform: scaleY(1); } }
+
+/* Gaveta de configurações */
+@keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+.animate-slideIn { animation: slideIn 0.28s cubic-bezier(0.22, 1, 0.36, 1); }
+@keyframes overlayIn { from { opacity: 0; } to { opacity: 1; } }
+.animate-overlayIn { animation: overlayIn 0.2s ease-out; }
+
+/* Movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+}
