@@ -1,24 +1,31 @@
 {
-  "name": "react-vite-tailwind",
+  "name": "musiccode-studio",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "description": "Crie músicas usando programação (JavaScript, HTML e em breve Lua/Python/Java). Web Audio API + Capacitor.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "deploy": "npm run build && gh-pages -d dist"
+    "deploy": "npm run build && gh-pages -d dist",
+    "test": "mkdir -p scripts/out && node node_modules/esbuild/bin/esbuild scripts/test-theory.ts --bundle --platform=node --format=esm --outfile=scripts/out/theory.mjs && node node_modules/esbuild/bin/esbuild scripts/test-api.ts --bundle --platform=node --format=esm --outfile=scripts/out/api.mjs && node scripts/out/theory.mjs && node scripts/out/api.mjs",
+    "cap:sync": "npm run build && cap sync",
+    "cap:android": "npm run build && cap add android && cap sync",
+    "cap:ios": "npm run build && cap add ios && cap sync",
+    "cap:open:android": "cap open android",
+    "cap:open:ios": "cap open ios"
   },
   "dependencies": {
-    "@types/react-syntax-highlighter": "^15.5.13",
+    "@capacitor/core": "^8.4.2",
     "clsx": "2.1.1",
     "lucide-react": "^0.575.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "react-syntax-highlighter": "^16.1.1",
     "tailwind-merge": "3.4.0"
   },
   "devDependencies": {
+    "@capacitor/cli": "^8.4.2",
     "@tailwindcss/vite": "4.1.17",
     "@types/node": "^22.0.0",
     "@types/react": "19.2.7",
@@ -29,5 +36,8 @@
     "typescript": "5.9.3",
     "vite": "7.2.4",
     "vite-plugin-singlefile": "2.3.0"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "*"
   }
 }

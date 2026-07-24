@@ -1,190 +1,153 @@
-import { Moon, Coffee, Globe, PenSquare, Music2, Zap, Star } from "lucide-react";
+/**
+ * HomePage — landing page do MusicCode Studio.
+ */
+import { Music2, Zap, Code2, Globe, ArrowRight, Sparkles, Smartphone } from "lucide-react";
+import { useSettings } from "../context/SettingsContext";
 import type { Page } from "../App";
 
-interface Props {
-  navigate: (p: Page) => void;
-}
-
-const CARDS = [
-  {
-    id: "lua" as Page,
-    emoji: "🌙",
-    icon: <Moon size={22} />,
-    title: "Lua",
-    subtitle: "Scripting Musical",
-    description: "Crie melodias, ritmos e escalas musicais usando a linguagem Lua. Veja o código em ação com templates prontos.",
-    color: "from-blue-600 to-cyan-600",
-    border: "border-blue-500/30",
-    bg: "bg-blue-500/5",
-    badge: "text-blue-300 bg-blue-500/15 border-blue-500/30",
-    features: ["Melodias com frequências", "Ritmos e BPM", "Escalas musicais"],
-    count: 3,
-  },
-  {
-    id: "java" as Page,
-    emoji: "☕",
-    icon: <Coffee size={22} />,
-    title: "Java",
-    subtitle: "Síntese Avançada",
-    description: "Utilize a API de som do Java para sintetizar tons, criar sequenciadores MIDI e pianos interativos.",
-    color: "from-orange-600 to-yellow-600",
-    border: "border-orange-500/30",
-    bg: "bg-orange-500/5",
-    badge: "text-orange-300 bg-orange-500/15 border-orange-500/30",
-    features: ["javax.sound.sampled", "MIDI Sequencer", "Piano Virtual Swing"],
-    count: 3,
-  },
-  {
-    id: "html" as Page,
-    emoji: "🌐",
-    icon: <Globe size={22} />,
-    title: "HTML",
-    subtitle: "Música no Navegador",
-    description: "Use a Web Audio API para criar pianos interativos, visualizadores de música e beat makers direto no browser.",
-    color: "from-pink-600 to-rose-600",
-    border: "border-pink-500/30",
-    bg: "bg-pink-500/5",
-    badge: "text-pink-300 bg-pink-500/15 border-pink-500/30",
-    features: ["Piano interativo", "Visualizador de áudio", "Beat Maker 16-steps"],
-    count: 3,
-  },
-  {
-    id: "editor" as Page,
-    emoji: "✏️",
-    icon: <PenSquare size={22} />,
-    title: "Meu Código",
-    subtitle: "Editor Livre",
-    description: "Escreva seu próprio código musical em Lua, Java ou HTML. Execute previews de HTML e baixe seus arquivos.",
-    color: "from-green-600 to-emerald-600",
-    border: "border-green-500/30",
-    bg: "bg-green-500/5",
-    badge: "text-green-300 bg-green-500/15 border-green-500/30",
-    features: ["Editor de código livre", "Preview ao vivo (HTML)", "Download do arquivo"],
-    count: null,
-  },
+const ACTIVE_LANGS = [
+  { icon: "🟨", name: "JavaScript", desc: "Studio com API musical (play, sleep, tambor...)", page: "studio" as Page, color: "from-yellow-500 to-amber-500", border: "border-yellow-500/30", ready: true },
+  { icon: "🌐", name: "HTML", desc: "Web Audio API direto com preview ao vivo", page: "html" as Page, color: "from-pink-500 to-rose-500", border: "border-pink-500/30", ready: true },
 ];
 
-const STATS = [
-  { label: "Templates", value: "9", icon: <Star size={16} />, color: "text-yellow-400" },
-  { label: "Linguagens", value: "3", icon: <Music2 size={16} />, color: "text-purple-400" },
-  { label: "Web Audio", value: "API", icon: <Zap size={16} />, color: "text-pink-400" },
+const COMING_LANGS = [
+  { icon: "🌙", name: "Lua", desc: "Em breve" },
+  { icon: "🐍", name: "Python", desc: "Em breve" },
+  { icon: "☕", name: "Java", desc: "Em breve" },
 ];
 
-export default function HomePage({ navigate }: Props) {
+export function HomePage({ navigate }: { navigate: (p: Page) => void }) {
+  const { accent } = useSettings();
+
   return (
-    <div className="max-w-6xl mx-auto px-4 py-12">
-
-      {/* ── HERO ── */}
+    <div className="max-w-6xl mx-auto px-4 py-10 md:py-16">
+      {/* HERO */}
       <div className="text-center mb-16">
-        <div className="inline-flex items-center gap-2 bg-purple-500/10 border border-purple-500/20 rounded-full px-4 py-1.5 text-xs font-semibold text-purple-300 mb-6 tracking-widest uppercase">
-          <Zap size={12} />
-          Música + Código = Arte
+        <div className={`inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 text-[11px] font-semibold text-gray-300 mb-6 tracking-widest uppercase`}>
+          <Zap size={12} className={accent.text} /> Música + Código = Arte
         </div>
 
-        <h1 className="text-5xl md:text-6xl font-black text-white leading-tight mb-4">
+        <h1 className="text-4xl md:text-6xl font-black text-white leading-tight mb-5">
           Crie Músicas com{" "}
-          <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
+          <span className={`bg-gradient-to-r ${accent.gradient} bg-clip-text text-transparent`}>
             Programação
           </span>
         </h1>
 
-        <p className="text-gray-400 text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
-          Explore três linguagens diferentes — <span className="text-blue-400 font-semibold">Lua</span>,{" "}
-          <span className="text-orange-400 font-semibold">Java</span> e{" "}
-          <span className="text-pink-400 font-semibold">HTML</span> — para compor,
-          sintetizar e visualizar música de formas únicas.
+        <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+          Um studio no navegador (e no celular!) para compor, sintetizar e ouvir música
+          usando código. Comece com{" "}
+          <span className="text-yellow-400 font-semibold">JavaScript</span> e{" "}
+          <span className="text-pink-400 font-semibold">HTML</span> — é só escrever e apertar tocar.
         </p>
 
-        {/* Stats */}
-        <div className="flex justify-center gap-6 flex-wrap">
-          {STATS.map((s) => (
-            <div key={s.label} className="flex items-center gap-2">
-              <span className={s.color}>{s.icon}</span>
-              <span className="text-2xl font-black text-white">{s.value}</span>
-              <span className="text-sm text-gray-500">{s.label}</span>
-            </div>
-          ))}
+        <div className="flex items-center justify-center gap-3 flex-wrap">
+          <button
+            onClick={() => navigate("studio")}
+            className={`flex items-center gap-2 px-7 py-3.5 rounded-2xl font-black text-base bg-gradient-to-r ${accent.gradient} text-white shadow-xl hover:opacity-90 active:scale-95 transition-all`}
+          >
+            <Code2 size={18} /> Começar a criar
+          </button>
+          <button
+            onClick={() => navigate("html")}
+            className="flex items-center gap-2 px-7 py-3.5 rounded-2xl font-bold text-base bg-white/5 border border-white/10 text-gray-300 hover:bg-white/10 hover:text-white active:scale-95 transition-all"
+          >
+            <Globe size={18} /> Ver Studio HTML
+          </button>
+        </div>
+
+        <div className="mt-6 flex items-center justify-center gap-4 text-xs text-gray-600 flex-wrap">
+          <span className="flex items-center gap-1"><Smartphone size={12} /> Site + App (Capacitor)</span>
+          <span className="flex items-center gap-1"><Music2 size={12} /> Web Audio API</span>
+          <span className="flex items-center gap-1"><Sparkles size={12} /> API estilo Sonic Pi</span>
         </div>
       </div>
 
-      {/* ── CARDS DE LINGUAGEM ── */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-16">
-        {CARDS.map((card) => (
-          <button
-            key={card.id}
-            onClick={() => navigate(card.id)}
-            className={`text-left group rounded-2xl border ${card.border} ${card.bg} p-6 transition-all duration-200 hover:scale-[1.02] hover:shadow-2xl hover:shadow-purple-900/20`}
-          >
-            {/* Topo */}
-            <div className="flex items-start justify-between mb-4">
-              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${card.color} flex items-center justify-center text-white shadow-lg`}>
-                {card.icon}
+      {/* LINGUAGENS */}
+      <section className="mb-16">
+        <h2 className="text-2xl font-black text-white text-center mb-2">🎵 Linguagens</h2>
+        <p className="text-gray-500 text-sm text-center mb-8">Disponíveis agora — mais chegando em breve.</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+          {ACTIVE_LANGS.map((l) => (
+            <button
+              key={l.name}
+              onClick={() => navigate(l.page)}
+              className={`text-left rounded-2xl p-6 border ${l.border} bg-gradient-to-br ${l.color} bg-opacity-10 hover:scale-[1.02] transition-transform`}
+            >
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-3xl">{l.icon}</span>
+                <div>
+                  <div className="text-lg font-black text-white">{l.name}</div>
+                  <div className="text-[11px] text-emerald-300 font-semibold">✓ Disponível agora</div>
+                </div>
+                <ArrowRight size={18} className="ml-auto text-white/70" />
               </div>
-              <div className={`text-xs font-bold px-2.5 py-1 rounded-full border ${card.badge}`}>
-                {card.count !== null ? `${card.count} templates` : "Editor livre"}
-              </div>
+              <p className="text-sm text-white/70 leading-relaxed">{l.desc}</p>
+            </button>
+          ))}
+        </div>
+        <div className="grid grid-cols-3 gap-3">
+          {COMING_LANGS.map((l) => (
+            <div key={l.name} className="rounded-2xl p-4 border border-white/5 bg-white/[0.02] text-center opacity-60">
+              <div className="text-2xl mb-1">{l.icon}</div>
+              <div className="text-sm font-bold text-white">{l.name}</div>
+              <div className="text-[10px] text-gray-500">{l.desc}</div>
             </div>
+          ))}
+        </div>
+      </section>
 
-            {/* Título */}
-            <div className="mb-1 flex items-center gap-2">
-              <span className="text-2xl font-black text-white">{card.emoji} {card.title}</span>
-            </div>
-            <p className="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-3">{card.subtitle}</p>
-            <p className="text-gray-400 text-sm leading-relaxed mb-4">{card.description}</p>
-
-            {/* Features */}
-            <ul className="space-y-1.5">
-              {card.features.map((f) => (
-                <li key={f} className="flex items-center gap-2 text-xs text-gray-500">
-                  <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-purple-500 to-pink-500" />
-                  {f}
-                </li>
-              ))}
-            </ul>
-
-            {/* CTA */}
-            <div className={`mt-5 text-xs font-bold text-transparent bg-clip-text bg-gradient-to-r ${card.color} group-hover:underline`}>
-              Explorar →
-            </div>
-          </button>
-        ))}
-      </div>
-
-      {/* ── COMO FUNCIONA ── */}
-      <div className="rounded-2xl border border-white/5 bg-white/2 p-8">
-        <h2 className="text-xl font-black text-white mb-8 text-center">
-          🎯 Como Funciona
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* COMO FUNCIONA */}
+      <section className="mb-16">
+        <h2 className="text-2xl font-black text-white text-center mb-8">🚀 Como funciona</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {[
-            {
-              step: "01",
-              title: "Escolha a Linguagem",
-              desc: "Selecione entre Lua, Java ou HTML conforme o que quer criar.",
-              icon: "🎯",
-            },
-            {
-              step: "02",
-              title: "Explore os Templates",
-              desc: "Cada linguagem tem templates prontos e comentados para você estudar e modificar.",
-              icon: "📋",
-            },
-            {
-              step: "03",
-              title: "Execute ou Baixe",
-              desc: "Templates HTML rodam diretamente no browser. Lua e Java podem ser baixados e executados localmente.",
-              icon: "🚀",
-            },
+            { n: "01", icon: "✍️", title: "Escolha um exemplo", desc: "Comece com um template pronto (melodia, bateria, arpejo...) no Studio JavaScript." },
+            { n: "02", icon: "🎛️", title: "Edite e ajuste", desc: "Mude notas, BPM, sintetizadores e adicione tambores. Tudo com código simples." },
+            { n: "03", icon: "▶️", title: "Aperte Tocar", desc: "Ouça sua música em tempo real, visualize as frequências e veja os logs no console." },
           ].map((s) => (
-            <div key={s.step} className="flex flex-col items-center text-center gap-3">
+            <div key={s.n} className="rounded-2xl border border-white/5 bg-white/[0.02] p-6 text-center flex flex-col items-center gap-2">
               <div className="text-4xl">{s.icon}</div>
-              <div className="text-xs font-black text-purple-500 tracking-widest">PASSO {s.step}</div>
+              <div className={`text-xs font-black uppercase tracking-widest ${accent.text}`}>Passo {s.n}</div>
               <h3 className="text-base font-bold text-white">{s.title}</h3>
               <p className="text-sm text-gray-500 leading-relaxed">{s.desc}</p>
             </div>
           ))}
         </div>
-      </div>
+      </section>
+
+      {/* EXEMPLO DE CÓDIGO */}
+      <section className="mb-16">
+        <div className="rounded-3xl border border-white/10 bg-[#0d1117] overflow-hidden">
+          <div className="flex items-center gap-2 px-5 py-3 bg-[#161b22] border-b border-white/10">
+            <span className="w-3 h-3 rounded-full bg-red-500/80" />
+            <span className="w-3 h-3 rounded-full bg-yellow-500/80" />
+            <span className="w-3 h-3 rounded-full bg-green-500/80" />
+            <span className="ml-3 text-xs text-gray-500 font-mono">melodia.js</span>
+          </div>
+          <pre className="p-6 text-sm font-mono text-gray-300 overflow-auto leading-relaxed"><code><span className="text-purple-400">bpm</span>(<span className="text-amber-300">120</span>)
+<span className="text-purple-400">synth</span>(<span className="text-emerald-400">"piano"</span>)
+
+<span className="text-purple-400">play</span>(<span className="text-emerald-400">"C4"</span>);  <span className="text-purple-400">sleep</span>(<span className="text-amber-300">1</span>)
+<span className="text-purple-400">play</span>(<span className="text-emerald-400">"E4"</span>);  <span className="text-purple-400">sleep</span>(<span className="text-amber-300">1</span>)
+<span className="text-purple-400">play</span>([<span className="text-emerald-400">"G4"</span>, <span className="text-emerald-400">"C5"</span>])  <span className="text-sky-400">// acorde!</span></code></pre>
+        </div>
+        <p className="text-center text-xs text-gray-600 mt-3">Assim é simples: <span className="text-yellow-400">play()</span> toca, <span className="text-yellow-400">sleep()</span> espera, e um array vira acorde.</p>
+      </section>
+
+      {/* CTA FINAL */}
+      <section className="text-center">
+        <div className={`rounded-3xl bg-gradient-to-br ${accent.gradient} p-10`}>
+          <h2 className="text-3xl font-black text-white mb-3">Pronto para compor? 🎶</h2>
+          <p className="text-white/80 mb-6 max-w-xl mx-auto">Abra o Studio e crie sua primeira música com código em segundos.</p>
+          <button
+            onClick={() => navigate("studio")}
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-black text-base bg-white text-gray-900 hover:scale-105 active:scale-95 transition-all"
+          >
+            <Music2 size={18} /> Abrir o Studio
+          </button>
+        </div>
+      </section>
     </div>
   );
 }

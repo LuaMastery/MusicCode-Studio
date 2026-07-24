@@ -155,6 +155,53 @@ npm run build
 ```
 Rode esses comandos novamente e verifique o log de erros.
 
+#### `Cannot find module @rollup/rollup-linux-x64-gnu`
+Bug conhecido do npm com dependências opcionais. Solução rápida:
+```bash
+npm i @rollup/rollup-linux-x64-gnu --no-save
+npm run build
+```
+(Ou simplesmente rode `npm install` novamente.)
+
+#### `vite: Permission denied`
+Os binários em `node_modules/.bin` podem ficar sem permissão de execução. Rode o build via Node:
+```bash
+node node_modules/vite/bin/vite.js build
+```
+
+---
+
+## 📱 Publicar como aplicativo nativo (Capacitor)
+
+O mesmo projeto vira um app **Android (.apk)** ou **iOS**. Pré-requisitos:
+**Android Studio** (+ JDK) para Android, **Xcode no macOS** para iOS.
+
+### 1. Instalar as plataformas (uma vez)
+```bash
+npm i -D @capacitor/android @capacitor/ios
+```
+
+### 2. Gerar o build web
+```bash
+npm run build
+```
+
+### 3. Adicionar a plataforma
+```bash
+npx cap add android   # ou: npx cap add ios
+npx cap sync          # copia o dist/ para o projeto nativo
+```
+
+### 4. Abrir e compilar
+```bash
+npx cap open android  # abre no Android Studio
+# No Android Studio: Build → Build Bundle(s)/APK(s) → Build APK(s)
+```
+
+O `capacitor.config.ts` já está configurado (`webDir: "dist"`, `appId`, `appName`).
+Como o `vite-plugin-singlefile` gera um `index.html` autossuficiente, o app funciona
+offline no WebView sem precisar de servidor.
+
 ---
 
 ## 👤 Criado por
