@@ -3,8 +3,10 @@
  * Cor de destaque (predefinidas + personalizada), animação de fundo, velocidade,
  * movimento reduzido, tamanho da fonte e salvamento automático.
  */
-import { X, RotateCcw } from "lucide-react";
+import { useState } from "react";
+import { X, RotateCcw, ShieldAlert } from "lucide-react";
 import { useSettings, type BgType } from "../context/SettingsContext";
+import { UnsafeConfirmModal } from "./UnsafeConfirmModal";
 
 const BG_OPTIONS: { id: BgType; label: string; icon: string }[] = [
   { id: "none", label: "Nenhuma", icon: "∅" },
@@ -40,6 +42,7 @@ function Row({ title, desc, children }: { title: string; desc?: string; children
 
 export function SettingsDrawer() {
   const { settings, update, reset, presets, accent, drawerOpen, closeDrawer } = useSettings();
+  const [showUnsafe, setShowUnsafe] = useState(false);
 
   if (!drawerOpen) return null;
 
@@ -146,6 +149,27 @@ export function SettingsDrawer() {
             </button>
           </section>
 
+          {/* Segurança HTML */}
+          <section>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-faint mb-3 flex items-center gap-1.5">
+              <ShieldAlert size={12} /> Segurança HTML
+            </h3>
+            <Row
+              title="Modo sem segurança"
+              desc="Permite que HTMLs personalizados usem rede, downloads e código remoto. Perigoso."
+            >
+              <Toggle
+                on={settings.htmlUnsafeMode}
+                onChange={(v) => (v ? setShowUnsafe(true) : update({ htmlUnsafeMode: false }))}
+              />
+            </Row>
+            {settings.htmlUnsafeMode && (
+              <div className="mt-2 rounded-lg border border-amber-500/30 bg-amber-500/[0.07] p-2.5 text-[11px] text-amber-200/80 leading-snug">
+                ⚠️ Segurança desativada. HTMLs personalizados têm acesso total — use apenas com conteúdo confiável.
+              </div>
+            )}
+          </section>
+
           {/* Arquivos */}
           <section>
             <h3 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-faint mb-3">Arquivos</h3>
@@ -163,6 +187,12 @@ export function SettingsDrawer() {
           </button>
         </div>
       </aside>
+
+      <UnsafeConfirmModal
+        open={showUnsafe}
+        onCancel={() => setShowUnsafe(false)}
+        onConfirm={() => { update({ htmlUnsafeMode: true }); setShowUnsafe(false); }}
+      />
     </div>
   );
 }

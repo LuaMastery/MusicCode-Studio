@@ -33,6 +33,7 @@ interface Settings {
   autoSave: boolean;
   sfxEnabled: boolean;
   sfxVolume: number;        // 0 .. 1
+  htmlUnsafeMode: boolean;  // zona de risco: desativa a segurança do HTML do usuário
 }
 
 const LS_KEY = "musiccode.settings.v1";
@@ -48,6 +49,7 @@ const DEFAULTS: Settings = {
   autoSave: false,
   sfxEnabled: true,
   sfxVolume: 0.4,
+  htmlUnsafeMode: false,
 };
 
 function load(): Settings {
