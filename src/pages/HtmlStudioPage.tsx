@@ -1,113 +1,103 @@
 /**
- * HtmlStudioPage — estúdio HTML minimalista.
- * Escreve HTML + Web Audio API e executa num preview isolado.
+ * HtmlStudioPage — galeria de instrumentos musicais interativos.
+ * O usuário escolhe um instrumento e INTERAGE para criar música (sem programar).
  */
 import { useState } from "react";
-import { Globe, Play, Copy, Check, Download, Code2, Eye } from "lucide-react";
-import { CodeEditor } from "../components/CodeEditor";
+import { Globe, ArrowLeft, Code2, Eye, Play, Maximize2 } from "lucide-react";
 import { HTML_EXAMPLES, type HtmlExample } from "../data/examples";
 import { useSettings } from "../context/SettingsContext";
 
 export function HtmlStudioPage() {
   const { accent } = useSettings();
-  const [selected, setSelected] = useState<HtmlExample>(HTML_EXAMPLES[0]);
-  const [code, setCode] = useState<string>(HTML_EXAMPLES[0].code);
-  const [preview, setPreview] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const [selected, setSelected] = useState<HtmlExample | null>(null);
+  const [showCode, setShowCode] = useState(false);
   const [runKey, setRunKey] = useState(0);
 
-  const select = (t: HtmlExample) => { setSelected(t); setCode(t.code); setPreview(false); };
-  const handleCopy = () => { navigator.clipboard?.writeText(code); setCopied(true); setTimeout(() => setCopied(false), 1800); };
-  const handleDownload = () => {
-    const blob = new Blob([code], { type: "text/html" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a"); a.href = url; a.download = `${selected.id}.html`; a.click();
-    URL.revokeObjectURL(url);
+  const open = (ex: HtmlExample) => {
+    setSelected(ex);
+    setShowCode(false);
+    setRunKey((k) => k + 1);
+    window.scrollTo({ top: 0 });
   };
+  const back = () => setSelected(null);
 
-  return (
-    <div className="max-w-5xl mx-auto px-5 py-12">
-      {/* Cabeçalho */}
-      <div className="flex items-center gap-3 mb-2">
-        <span className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ background: `${accent.hex}1a` }}>
-          <Globe size={18} style={{ color: accent.hex }} />
-        </span>
-        <h1 className="text-2xl font-extrabold tracking-tight text-white">Studio HTML</h1>
+  // ── VISUALIZADOR (instrumento aberto) ───────────────────────────────────────
+  if (selected) {
+    return (
+      <div className="flex flex-col relative z-10" style={{ height: "calc(100vh - 3.5rem)" }}>
+        <div className="flex items-center gap-3 px-4 h-12 border-b border-line bg-card/60 backdrop-blur shrink-0">
+          <button data-sfx="close" onClick={back} className="flex items-center gap-1.5 text-[13px] font-medium text-muted hover:text-white">
+            <ArrowLeft size={15} /> Voltar
+          </button>
+          <span className="text-lg">{selected.icon}</span>
+          <span className="text-[14px] font-bold text-white">{selected.name}</span>
+
+          <div className="ml-auto flex items-center gap-1 bg-ink border border-line rounded-lg p-0.5">
+            <button onClick={() => setShowCode(false)} className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-[12px] font-medium transition-all ${!showCode ? "bg-white/[0.07] text-white" : "text-muted hover:text-white"}`}>
+              <Eye size={13} /> Interagir
+            </button>
+            <button onClick={() => setShowCode(true)} className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-[12px] font-medium transition-all ${showCode ? "bg-white/[0.07] text-white" : "text-muted hover:text-white"}`}>
+              <Code2 size={13} /> Código
+            </button>
+          </div>
+          <button data-sfx="open" onClick={() => setRunKey((k) => k + 1)} title="Reiniciar" className="flex items-center gap-1.5 text-[12px] font-medium text-white px-3 py-1.5 rounded-lg" style={{ background: accent.hex }}>
+            <Play size={12} fill="currentColor" /> Reiniciar
+          </button>
+        </div>
+
+        <div className="flex-1 min-h-0 bg-ink">
+          {showCode ? (
+            <pre className="h-full overflow-auto p-5 text-[12px] font-mono text-[#c4c4cc] leading-relaxed"><code>{selected.code}</code></pre>
+          ) : (
+            <iframe key={runKey} srcDoc={selected.code} title={selected.name} sandbox="allow-scripts" className="w-full h-full border-none" />
+          )}
+        </div>
       </div>
-      <p className="text-muted text-sm mb-8">HTML + Web Audio API, com preview ao vivo num iframe isolado.</p>
+    );
+  }
 
-      {/* Pílulas de exemplos */}
-      <div className="flex gap-2 overflow-x-auto pb-2 mb-5 custom-scroll">
-        {HTML_EXAMPLES.map((t) => (
+  // ── GALERIA ────────────────────────────────────────────────────────────────
+  return (
+    <div className="relative z-10 max-w-6xl mx-auto px-5 py-12">
+      <div className="flex items-center gap-3 mb-2">
+        <span className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: `${accent.hex}1a` }}>
+          <Globe size={20} style={{ color: accent.hex }} />
+        </span>
+        <h1 className="text-3xl font-extrabold tracking-tight text-white">Studio HTML</h1>
+      </div>
+      <p className="text-muted text-sm mb-10 max-w-xl">
+        Uma coleção de instrumentos musicais interativos. Escolha um e <span className="text-white">crie sua música interagindo</span> — sem precisar programar.
+      </p>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {HTML_EXAMPLES.map((ex) => (
           <button
-            key={t.id}
-            onClick={() => select(t)}
-            className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-medium border transition-all ${
-              selected.id === t.id
-                ? "text-white"
-                : "text-muted border-line hover:text-white hover:bg-white/[0.03]"
-            }`}
-            style={selected.id === t.id ? { borderColor: `${accent.hex}66`, background: `${accent.hex}1a` } : undefined}
+            key={ex.id}
+            data-sfx="open"
+            onClick={() => open(ex)}
+            className="group text-left rounded-2xl border border-line bg-card p-5 transition-all hover:-translate-y-1 hover:border-white/20 hover:bg-[#16161d]"
           >
-            <span>{t.icon}</span> {t.name}
+            <div className="flex items-center gap-3 mb-3">
+              <span className="w-11 h-11 rounded-xl flex items-center justify-center text-xl transition-transform group-hover:scale-110" style={{ background: `${ex.color}1f` }}>
+                {ex.icon}
+              </span>
+              <div className="min-w-0">
+                <div className="text-[15px] font-bold text-white">{ex.name}</div>
+                <div className="text-[11px] text-faint">Interativo</div>
+              </div>
+              <span className="ml-auto flex items-center gap-1 text-[11px] font-semibold text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                <Maximize2 size={12} /> Abrir
+              </span>
+            </div>
+            <p className="text-[12.5px] text-muted leading-relaxed mb-3">{ex.description}</p>
+            <div className="flex flex-wrap gap-1.5">
+              {ex.tags.map((t) => (
+                <span key={t} className="text-[10px] text-faint border border-line rounded-full px-2 py-0.5">{t}</span>
+              ))}
+            </div>
           </button>
         ))}
       </div>
-
-      {/* Ações */}
-      <div className="flex items-center justify-between flex-wrap gap-2 mb-4">
-        <div className="flex gap-1 bg-card border border-line rounded-lg p-0.5">
-          <button
-            onClick={() => setPreview(false)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[12px] font-medium transition-all ${!preview ? "bg-white/[0.07] text-white" : "text-muted hover:text-white"}`}
-          >
-            <Code2 size={13} /> Código
-          </button>
-          <button
-            onClick={() => setPreview(true)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[12px] font-medium transition-all ${preview ? "bg-white/[0.07] text-white" : "text-muted hover:text-white"}`}
-          >
-            <Eye size={13} /> Preview
-          </button>
-        </div>
-        <div className="flex gap-2">
-          <button onClick={handleCopy} className="flex items-center gap-1.5 text-[12px] text-muted hover:text-white border border-line rounded-lg px-3 py-1.5">
-            {copied ? <Check size={13} style={{ color: accent.hex }} /> : <Copy size={13} />}
-            {copied ? "Copiado" : "Copiar"}
-          </button>
-          <button onClick={handleDownload} className="flex items-center gap-1.5 text-[12px] text-muted hover:text-white border border-line rounded-lg px-3 py-1.5">
-            <Download size={13} /> .html
-          </button>
-          <button
-            onClick={() => { setPreview(true); setRunKey((k) => k + 1); }}
-            className="flex items-center gap-1.5 text-[12px] font-semibold text-white rounded-lg px-3.5 py-1.5"
-            style={{ background: accent.hex }}
-          >
-            <Play size={13} fill="currentColor" /> Executar
-          </button>
-        </div>
-      </div>
-
-      {!preview ? (
-        <div className="rounded-xl border border-line overflow-hidden">
-          <div className="flex items-center gap-2 px-4 h-9 border-b border-line bg-card/50">
-            <span className="w-2.5 h-2.5 rounded-full bg-white/15" />
-            <span className="w-2.5 h-2.5 rounded-full bg-white/15" />
-            <span className="w-2.5 h-2.5 rounded-full bg-white/15" />
-            <span className="ml-2 text-[11px] text-faint font-mono">{selected.id}.html</span>
-            <span className="ml-auto text-[10px] px-2 py-0.5 rounded-full border" style={{ borderColor: `${accent.hex}40`, color: accent.hex, background: `${accent.hex}14` }}>HTML</span>
-          </div>
-          <CodeEditor value={code} onChange={setCode} language="text" minHeight={500} />
-        </div>
-      ) : (
-        <div className="rounded-xl border border-line overflow-hidden bg-white">
-          <div className="flex items-center gap-2 px-4 h-9 border-b border-line bg-card/50">
-            <span className="w-2.5 h-2.5 rounded-full" style={{ background: accent.hex }} />
-            <span className="ml-2 text-[11px] font-mono" style={{ color: accent.hex }}>▶ Preview — {selected.name}</span>
-          </div>
-          <iframe key={runKey} srcDoc={code} title="preview" sandbox="allow-scripts" className="w-full bg-white" style={{ height: 500, border: "none" }} />
-        </div>
-      )}
     </div>
   );
 }

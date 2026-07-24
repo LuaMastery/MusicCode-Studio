@@ -39,8 +39,8 @@ export function HomePage({ navigate }: { navigate: (p: Page) => void }) {
         </h1>
 
         <p className="text-center text-muted text-base md:text-lg max-w-xl mx-auto mb-9 leading-relaxed">
-          Um studio minimalista para compor, sintetizar e ouvir música escrevendo
-          JavaScript ou HTML. Escreva. Aperte tocar. Pronto.
+          Um studio minimalista para compor e ouvir música — programe em JavaScript
+          ou crie som interagindo com os instrumentos em HTML.
         </p>
 
         {/* CTAs */}
