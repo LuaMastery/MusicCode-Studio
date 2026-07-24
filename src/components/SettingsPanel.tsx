@@ -13,7 +13,7 @@ interface Props {
 
 export function SettingsPanel({ autoSave, onAutoSave, fontSize, onFontSize, onClearFiles }: Props) {
   return (
-    <div className="w-60 bg-[#252526] shrink-0 flex flex-col border-r border-black/40">
+    <div className="w-60 bg-[#131319] shrink-0 flex flex-col border-r border-black/40">
       <div className="h-9 flex items-center px-3 text-[11px] font-bold tracking-widest text-[#bbbbbb] uppercase shrink-0">
         Configurações
       </div>
@@ -26,7 +26,7 @@ export function SettingsPanel({ autoSave, onAutoSave, fontSize, onFontSize, onCl
             <span>Salvamento automático</span>
             <button
               onClick={() => onAutoSave(!autoSave)}
-              className={`relative w-9 h-5 rounded-full transition-colors ${autoSave ? "bg-[#0e639c]" : "bg-[#5a5a5a]"}`}
+              className={`relative w-9 h-5 rounded-full transition-colors ${autoSave ? "bg-[#7c5cff]" : "bg-[#5a5a5a]"}`}
             >
               <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full transition-all ${autoSave ? "left-[18px]" : "left-0.5"}`} />
             </button>
@@ -46,7 +46,7 @@ export function SettingsPanel({ autoSave, onAutoSave, fontSize, onFontSize, onCl
           <input
             type="range" min={11} max={20} value={fontSize}
             onChange={(e) => onFontSize(Number(e.target.value))}
-            className="w-full mt-1 accent-[#007acc]"
+            className="w-full mt-1 accent-[#8b5cf6]"
           />
         </div>
 

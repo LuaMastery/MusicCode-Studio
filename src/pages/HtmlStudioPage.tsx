@@ -1,9 +1,9 @@
 /**
- * HtmlStudioPage — o estúdio HTML.
- * O usuário escreve HTML+JS (Web Audio API direto) e vê/executa num iframe.
+ * HtmlStudioPage — estúdio HTML minimalista.
+ * Escreve HTML + Web Audio API e executa num preview isolado.
  */
 import { useState } from "react";
-import { Globe, Play, X, Copy, Check, Download, Code2, Eye } from "lucide-react";
+import { Globe, Play, Copy, Check, Download, Code2, Eye } from "lucide-react";
 import { CodeEditor } from "../components/CodeEditor";
 import { HTML_EXAMPLES, type HtmlExample } from "../data/examples";
 import { useSettings } from "../context/SettingsContext";
@@ -16,160 +16,98 @@ export function HtmlStudioPage() {
   const [copied, setCopied] = useState(false);
   const [runKey, setRunKey] = useState(0);
 
-  const selectExample = (t: HtmlExample) => {
-    setSelected(t);
-    setCode(t.code);
-    setPreview(false);
-  };
-
-  const handleCopy = () => {
-    navigator.clipboard?.writeText(code);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1800);
-  };
-
+  const select = (t: HtmlExample) => { setSelected(t); setCode(t.code); setPreview(false); };
+  const handleCopy = () => { navigator.clipboard?.writeText(code); setCopied(true); setTimeout(() => setCopied(false), 1800); };
   const handleDownload = () => {
     const blob = new Blob([code], { type: "text/html" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${selected.id}.html`;
-    a.click();
+    const a = document.createElement("a"); a.href = url; a.download = `${selected.id}.html`; a.click();
     URL.revokeObjectURL(url);
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      <div className="flex items-center gap-4 mb-6">
-        <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${accent.gradient} flex items-center justify-center shadow-lg`}>
-          <Globe size={24} className="text-white" />
+    <div className="max-w-5xl mx-auto px-5 py-12">
+      {/* Cabeçalho */}
+      <div className="flex items-center gap-3 mb-2">
+        <span className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ background: `${accent.hex}1a` }}>
+          <Globe size={18} style={{ color: accent.hex }} />
+        </span>
+        <h1 className="text-2xl font-extrabold tracking-tight text-white">Studio HTML</h1>
+      </div>
+      <p className="text-muted text-sm mb-8">HTML + Web Audio API, com preview ao vivo num iframe isolado.</p>
+
+      {/* Pílulas de exemplos */}
+      <div className="flex gap-2 overflow-x-auto pb-2 mb-5 custom-scroll">
+        {HTML_EXAMPLES.map((t) => (
+          <button
+            key={t.id}
+            onClick={() => select(t)}
+            className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-medium border transition-all ${
+              selected.id === t.id
+                ? "text-white"
+                : "text-muted border-line hover:text-white hover:bg-white/[0.03]"
+            }`}
+            style={selected.id === t.id ? { borderColor: `${accent.hex}66`, background: `${accent.hex}1a` } : undefined}
+          >
+            <span>{t.icon}</span> {t.name}
+          </button>
+        ))}
+      </div>
+
+      {/* Ações */}
+      <div className="flex items-center justify-between flex-wrap gap-2 mb-4">
+        <div className="flex gap-1 bg-card border border-line rounded-lg p-0.5">
+          <button
+            onClick={() => setPreview(false)}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[12px] font-medium transition-all ${!preview ? "bg-white/[0.07] text-white" : "text-muted hover:text-white"}`}
+          >
+            <Code2 size={13} /> Código
+          </button>
+          <button
+            onClick={() => setPreview(true)}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[12px] font-medium transition-all ${preview ? "bg-white/[0.07] text-white" : "text-muted hover:text-white"}`}
+          >
+            <Eye size={13} /> Preview
+          </button>
         </div>
-        <div>
-          <h1 className="text-2xl md:text-3xl font-black text-white">🌐 Studio HTML</h1>
-          <p className="text-gray-400 text-sm mt-0.5">
-            Escreva HTML + Web Audio API e execute ao vivo num preview isolado.
-          </p>
+        <div className="flex gap-2">
+          <button onClick={handleCopy} className="flex items-center gap-1.5 text-[12px] text-muted hover:text-white border border-line rounded-lg px-3 py-1.5">
+            {copied ? <Check size={13} style={{ color: accent.hex }} /> : <Copy size={13} />}
+            {copied ? "Copiado" : "Copiar"}
+          </button>
+          <button onClick={handleDownload} className="flex items-center gap-1.5 text-[12px] text-muted hover:text-white border border-line rounded-lg px-3 py-1.5">
+            <Download size={13} /> .html
+          </button>
+          <button
+            onClick={() => { setPreview(true); setRunKey((k) => k + 1); }}
+            className="flex items-center gap-1.5 text-[12px] font-semibold text-white rounded-lg px-3.5 py-1.5"
+            style={{ background: accent.hex }}
+          >
+            <Play size={13} fill="currentColor" /> Executar
+          </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
-        {/* ── SIDEBAR ── */}
-        <aside className="lg:col-span-3 space-y-2">
-          <h2 className="text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-3 px-1">
-            📋 Exemplos HTML
-          </h2>
-          {HTML_EXAMPLES.map((t) => (
-            <button
-              key={t.id}
-              onClick={() => selectExample(t)}
-              className={`w-full text-left rounded-xl border p-3 transition-all ${
-                selected.id === t.id
-                  ? "border-white/30 bg-white/10"
-                  : "border-white/5 bg-white/[0.02] hover:bg-white/5 hover:border-white/10"
-              }`}
-            >
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-lg">{t.icon}</span>
-                <span className={`text-sm font-bold ${selected.id === t.id ? "text-white" : "text-gray-200"}`}>
-                  {t.name}
-                </span>
-              </div>
-              <p className="text-[11px] text-gray-500 leading-snug">{t.description}</p>
-            </button>
-          ))}
-        </aside>
-
-        {/* ── PRINCIPAL ── */}
-        <main className="lg:col-span-9 space-y-4">
-          <div className="flex items-center justify-between flex-wrap gap-2">
-            <div>
-              <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                <span>{selected.icon}</span> {selected.name}
-              </h2>
-              <p className="text-xs text-gray-500">{selected.description}</p>
-            </div>
-            <div className="flex gap-2">
-              <button onClick={handleCopy} className="flex items-center gap-1.5 text-xs bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 px-3 py-2 rounded-lg transition-colors">
-                {copied ? <Check size={13} className="text-emerald-400" /> : <Copy size={13} />}
-                {copied ? "Copiado!" : "Copiar"}
-              </button>
-              <button onClick={handleDownload} className="flex items-center gap-1.5 text-xs bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 px-3 py-2 rounded-lg transition-colors">
-                <Download size={13} /> .html
-              </button>
-              <button
-                onClick={() => { setPreview(true); setRunKey((k) => k + 1); }}
-                className={`flex items-center gap-1.5 text-xs px-4 py-2 rounded-lg font-bold transition-colors bg-gradient-to-r ${accent.gradient} text-white`}
-              >
-                <Play size={13} fill="currentColor" /> Executar
-              </button>
-            </div>
+      {!preview ? (
+        <div className="rounded-xl border border-line overflow-hidden">
+          <div className="flex items-center gap-2 px-4 h-9 border-b border-line bg-card/50">
+            <span className="w-2.5 h-2.5 rounded-full bg-white/15" />
+            <span className="w-2.5 h-2.5 rounded-full bg-white/15" />
+            <span className="w-2.5 h-2.5 rounded-full bg-white/15" />
+            <span className="ml-2 text-[11px] text-faint font-mono">{selected.id}.html</span>
+            <span className="ml-auto text-[10px] px-2 py-0.5 rounded-full border" style={{ borderColor: `${accent.hex}40`, color: accent.hex, background: `${accent.hex}14` }}>HTML</span>
           </div>
-
-          {/* Tabs Código / Preview */}
-          <div className="flex gap-1 bg-white/[0.03] rounded-xl p-1 w-fit border border-white/10">
-            <button
-              onClick={() => setPreview(false)}
-              className={`px-4 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${!preview ? "bg-white/10 text-white" : "text-gray-500 hover:text-gray-300"}`}
-            >
-              <Code2 size={13} /> Código
-            </button>
-            <button
-              onClick={() => setPreview(true)}
-              className={`px-4 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${preview ? "bg-white/10 text-white" : "text-gray-500 hover:text-gray-300"}`}
-            >
-              <Eye size={13} /> Preview
-            </button>
+          <CodeEditor value={code} onChange={setCode} language="text" minHeight={500} />
+        </div>
+      ) : (
+        <div className="rounded-xl border border-line overflow-hidden bg-white">
+          <div className="flex items-center gap-2 px-4 h-9 border-b border-line bg-card/50">
+            <span className="w-2.5 h-2.5 rounded-full" style={{ background: accent.hex }} />
+            <span className="ml-2 text-[11px] font-mono" style={{ color: accent.hex }}>▶ Preview — {selected.name}</span>
           </div>
-
-          {!preview ? (
-            <div className="rounded-2xl border border-white/10 overflow-hidden">
-              <div className="flex items-center gap-2 px-4 py-2.5 bg-[#161b22] border-b border-white/10">
-                <span className="w-3 h-3 rounded-full bg-red-500/80" />
-                <span className="w-3 h-3 rounded-full bg-yellow-500/80" />
-                <span className="w-3 h-3 rounded-full bg-green-500/80" />
-                <span className="ml-3 text-xs text-gray-500 font-mono">{selected.id}.html</span>
-                <span className="ml-auto text-[10px] font-bold px-2 py-0.5 rounded-full border border-pink-500/30 bg-pink-500/10 text-pink-400">🌐 HTML</span>
-              </div>
-              <CodeEditor value={code} onChange={setCode} language="text" minHeight={520} />
-            </div>
-          ) : (
-            <div className="rounded-2xl border border-emerald-500/20 overflow-hidden bg-white">
-              <div className="flex items-center gap-2 px-4 py-2.5 bg-[#161b22] border-b border-emerald-500/20">
-                <span className="w-3 h-3 rounded-full bg-emerald-500" />
-                <span className="ml-2 text-xs text-emerald-400 font-mono font-bold">▶ Preview ao vivo — {selected.name}</span>
-                <button onClick={() => setPreview(false)} className="ml-auto flex items-center gap-1 text-[11px] text-gray-400 hover:text-white">
-                  <X size={12} /> Fechar
-                </button>
-              </div>
-              <iframe
-                key={runKey}
-                srcDoc={code}
-                title="preview"
-                sandbox="allow-scripts"
-                className="w-full bg-white"
-                style={{ height: 520, border: "none" }}
-              />
-            </div>
-          )}
-
-          <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-5">
-            <h3 className="text-sm font-bold text-white mb-3">💡 Dicas da Web Audio API</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
-              {[
-                ["AudioContext", "O motor de áudio. Crie um para começar."],
-                ["OscillatorNode", "Gera tons: sine, square, sawtooth, triangle."],
-                ["GainNode", "Controla o volume e envelopes."],
-                ["AnalyserNode", "Dados de frequência para visualização."],
-              ].map(([t, d]) => (
-                <div key={t} className="rounded-lg border border-pink-500/15 bg-pink-500/5 p-3">
-                  <div className="font-mono font-bold text-pink-400 mb-1">{t}</div>
-                  <div className="text-gray-500 leading-snug">{d}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </main>
-      </div>
+          <iframe key={runKey} srcDoc={code} title="preview" sandbox="allow-scripts" className="w-full bg-white" style={{ height: 500, border: "none" }} />
+        </div>
+      )}
     </div>
   );
 }

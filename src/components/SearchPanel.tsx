@@ -39,13 +39,13 @@ export function SearchPanel({ files, onOpen }: Props) {
   const total = results.reduce((a, r) => a + r.matches.length, 0);
 
   return (
-    <div className="w-60 bg-[#252526] shrink-0 flex flex-col border-r border-black/40">
+    <div className="w-60 bg-[#131319] shrink-0 flex flex-col border-r border-black/40">
       <div className="h-9 flex items-center px-3 text-[11px] font-bold tracking-widest text-[#bbbbbb] uppercase shrink-0">
         Buscar
       </div>
 
       <div className="px-2 pb-2 flex items-center gap-1">
-        <div className="flex-1 flex items-center bg-[#3c3c3c] rounded px-2">
+        <div className="flex-1 flex items-center bg-[#1a1a22] rounded px-2">
           <Search size={13} className="text-[#858585]" />
           <input
             autoFocus
@@ -58,7 +58,7 @@ export function SearchPanel({ files, onOpen }: Props) {
         <button
           title="Diferenciar maiúsculas"
           onClick={() => setCaseSensitive((c) => !c)}
-          className={`p-1.5 rounded ${caseSensitive ? "bg-[#0e639c] text-white" : "text-[#858585] hover:bg-white/10"}`}
+          className={`p-1.5 rounded ${caseSensitive ? "bg-[#7c5cff] text-white" : "text-[#858585] hover:bg-white/10"}`}
         >
           <CaseSensitive size={14} />
         </button>
@@ -78,7 +78,7 @@ export function SearchPanel({ files, onOpen }: Props) {
               <button
                 key={i}
                 onClick={() => onOpen(file)}
-                className="w-full text-left flex gap-2 pl-5 pr-2 py-[3px] text-[12px] text-[#a0a0a0] hover:bg-[#2a2d2e]"
+                className="w-full text-left flex gap-2 pl-5 pr-2 py-[3px] text-[12px] text-[#a0a0a0] hover:bg-[#1a1a22]"
               >
                 <span className="text-[#858585] shrink-0">{m.line}</span>
                 <span className="truncate font-mono">{m.text}</span>

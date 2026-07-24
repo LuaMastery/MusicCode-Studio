@@ -1,63 +1,62 @@
 @import "tailwindcss";
 
-/* ── Scrollbars (tema escuro IDE) ─────────────────────────────────────────── */
+/* ─── Sistema de design: minimalista escuro + violeta ─────────────────────── */
+@theme {
+  --color-ink: #08080b;        /* fundo da página */
+  --color-panel: #0d0d12;      /* painéis / editor */
+  --color-card: #131319;       /* cartões e barras laterais */
+  --color-hover: #1a1a22;      /* estados elevados / hover */
+  --color-line: #23232c;       /* bordas */
+  --color-brand: #8b5cf6;      /* violeta (cor de destaque) */
+  --color-brand-soft: #a78bfa;
+  --color-muted: #8a8a96;      /* texto secundário */
+  --color-faint: #56565f;      /* texto discreto */
+
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", "Menlo", "Monaco", "Consolas", monospace;
+}
+
+/* ── Base ─────────────────────────────────────────────────────────────────── */
+html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+body {
+  background: var(--color-ink);
+  color: #e9e9ee;
+  font-family: var(--font-sans);
+  letter-spacing: -0.011em;
+}
+
+::selection { background: rgba(139, 92, 246, 0.32); color: #fff; }
+
+/* ── Scrollbars ────────────────────────────────────────────────────────────── */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #424242 transparent;
+  scrollbar-color: #2a2a33 transparent;
 }
+*::-webkit-scrollbar { width: 9px; height: 9px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb { background: #26262e; border-radius: 99px; border: 2px solid transparent; background-clip: padding-box; }
+*::-webkit-scrollbar-thumb:hover { background: #34343f; background-clip: padding-box; }
+*::-webkit-scrollbar-corner { background: transparent; }
 
-*::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-
-*::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-*::-webkit-scrollbar-thumb {
-  background: #424242;
-  border-radius: 0;
-}
-
-*::-webkit-scrollbar-thumb:hover {
-  background: #4e4e4e;
-}
-
-*::-webkit-scrollbar-corner {
-  background: transparent;
-}
-
-body {
-  background: #1e1e1e;
-}
-
-/* ── Realce de sintaxe (tema Dark+ do VS Code) ────────────────────────────── */
-.tok-comment  { color: #6a9955; font-style: italic; }
-.tok-string   { color: #ce9178; }
-.tok-number   { color: #b5cea8; }
-.tok-keyword  { color: #569cd6; }   /* const, let, var, function */
-.tok-control  { color: #c586c0; }   /* if, for, return, await... */
-.tok-literal  { color: #569cd6; }   /* true, false, null, this */
-.tok-fn       { color: #dcdcaa; }   /* chamadas de função */
-.tok-prop     { color: #9cdcfe; }   /* propriedades */
-.tok-punct    { color: #d4d4d4; }
+/* ── Realce de sintaxe (tema Dark+ refinado) ───────────────────────────────── */
+.tok-comment  { color: #5c6370; font-style: italic; }
+.tok-string   { color: #c3a96e; }
+.tok-number   { color: #ab9df2; }
+.tok-keyword  { color: #8b5cf6; }
+.tok-control  { color: #b08cd6; }
+.tok-literal  { color: #8b5cf6; }
+.tok-fn       { color: #d7c9a9; }
+.tok-punct    { color: #7a7a85; }
 
 /* ── Animações ─────────────────────────────────────────────────────────────── */
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
-}
+@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 .animate-float { animation: float 3s ease-in-out infinite; }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(4px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.animate-fadeIn { animation: fadeIn 0.2s ease-out forwards; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+.animate-fadeIn { animation: fadeIn 0.35s ease-out forwards; }
 
-@keyframes blink {
-  0%, 49% { opacity: 1; }
-  50%, 100% { opacity: 0; }
-}
+@keyframes blink { 0%,49% { opacity: 1; } 50%,100% { opacity: 0; } }
 .terminal-cursor { animation: blink 1s step-end infinite; }
+
+@keyframes pulseGlow { 0%,100% { opacity: 0.5; } 50% { opacity: 0.9; } }
+.animate-pulseGlow { animation: pulseGlow 4s ease-in-out infinite; }

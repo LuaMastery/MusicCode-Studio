@@ -112,13 +112,13 @@ export const CodeEditor = forwardRef<CodeEditorHandle, Props>(function CodeEdito
   };
 
   const rootStyle = minHeight ? { height: minHeight } : undefined;
-  const rootClass = minHeight ? "flex bg-[#1e1e1e]" : "flex flex-1 min-h-0 bg-[#1e1e1e]";
+  const rootClass = minHeight ? "flex bg-[#0d0d12]" : "flex flex-1 min-h-0 bg-[#0d0d12]";
 
   return (
     <div className={rootClass} style={rootStyle}>
       <div
         ref={gutterRef}
-        className="overflow-hidden select-none bg-[#1e1e1e] text-right text-[#858585] shrink-0"
+        className="overflow-hidden select-none bg-[#0d0d12] text-right text-[#858585] shrink-0"
         style={{ width: 56, paddingTop: 12, paddingBottom: 12, paddingRight: 12, ...shared }}
       >
         {Array.from({ length: lineCount }, (_, i) => (

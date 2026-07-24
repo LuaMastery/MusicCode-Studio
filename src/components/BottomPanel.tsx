@@ -29,8 +29,8 @@ export function BottomPanel({ logs, onClear, playing, tab, onTab, collapsed, onC
   ];
 
   return (
-    <div className="bg-[#1e1e1e] border-t border-black/40 flex flex-col shrink-0" style={{ height: collapsed ? 32 : 230 }}>
-      <div className="flex items-center bg-[#252526] border-b border-black/30 shrink-0">
+    <div className="bg-[#0d0d12] border-t border-black/40 flex flex-col shrink-0" style={{ height: collapsed ? 32 : 230 }}>
+      <div className="flex items-center bg-[#131319] border-b border-black/30 shrink-0">
         {TABS.map((t) => {
           const Icon = t.icon;
           const isActive = tab === t.id;
@@ -42,10 +42,10 @@ export function BottomPanel({ logs, onClear, playing, tab, onTab, collapsed, onC
                 isActive ? "text-white" : "text-[#858585] hover:text-white"
               }`}
             >
-              {isActive && <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-[#007acc]" />}
+              {isActive && <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-[#8b5cf6]" />}
               <Icon size={13} /> {t.label}
               {t.badge ? (
-                <span className="ml-0.5 bg-[#4d4d4d] text-white text-[9px] px-1.5 rounded-full leading-tight">{t.badge}</span>
+                <span className="ml-0.5 bg-[#23232c] text-white text-[9px] px-1.5 rounded-full leading-tight">{t.badge}</span>
               ) : null}
             </button>
           );

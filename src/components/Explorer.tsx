@@ -36,7 +36,7 @@ export function Explorer({
   };
 
   return (
-    <div className="w-60 bg-[#252526] shrink-0 flex flex-col border-r border-black/40">
+    <div className="w-60 bg-[#131319] shrink-0 flex flex-col border-r border-black/40">
       {/* Cabeçalho com ações */}
       <div className="h-9 flex items-center justify-between px-3 text-[11px] font-bold tracking-widest text-[#bbbbbb] uppercase shrink-0">
         <span>Explorador</span>
@@ -141,14 +141,14 @@ function FileRow({
     <div
       onClick={onOpen}
       className={`group relative flex items-center gap-1.5 pl-5 pr-2 py-[3px] text-[13px] cursor-pointer transition-colors ${
-        active ? "bg-[#37373d] text-white" : "text-[#cccccc] hover:bg-[#2a2d2e]"
+        active ? "bg-[#1e1e26] text-white" : "text-[#cccccc] hover:bg-[#1a1a22]"
       }`}
     >
-      {active && <span className="absolute left-0 top-0 bottom-0 w-0.5 bg-[#007acc]" />}
+      {active && <span className="absolute left-0 top-0 bottom-0 w-0.5 bg-[#8b5cf6]" />}
       {isExample ? (
-        <Lock size={13} className="text-[#519aba] shrink-0" />
+        <Lock size={13} className="text-[#a78bfa] shrink-0" />
       ) : (
-        <FileCode2 size={15} className="text-[#dcb67a] shrink-0" />
+        <FileCode2 size={15} className="text-[#c4b5fd] shrink-0" />
       )}
 
       {renaming ? (
@@ -162,7 +162,7 @@ function FileRow({
             if (e.key === "Enter") onRenameCommit();
             if (e.key === "Escape") onRenameCommit();
           }}
-          className="flex-1 min-w-0 bg-[#3c3c3c] text-white text-[12px] px-1 py-0.5 rounded outline-none border border-[#007acc]"
+          className="flex-1 min-w-0 bg-[#1a1a22] text-white text-[12px] px-1 py-0.5 rounded outline-none border border-[#8b5cf6]"
         />
       ) : (
         <span className="flex-1 truncate">{file.name}.js</span>

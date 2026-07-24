@@ -53,7 +53,7 @@ export function MusicPanel({ onInsert }: Props) {
   const [section, setSection] = useState<"synth" | "drum" | "snip">("synth");
 
   return (
-    <div className="w-60 bg-[#252526] shrink-0 flex flex-col border-r border-black/40">
+    <div className="w-60 bg-[#131319] shrink-0 flex flex-col border-r border-black/40">
       <div className="h-9 flex items-center px-3 text-[11px] font-bold tracking-widest text-[#bbbbbb] uppercase shrink-0">
         Música
       </div>
@@ -65,7 +65,7 @@ export function MusicPanel({ onInsert }: Props) {
             key={id}
             onClick={() => setSection(id)}
             className={`flex-1 py-1.5 text-[10px] font-semibold uppercase tracking-wide transition-colors ${
-              section === id ? "text-white border-b-2 border-[#007acc]" : "text-[#858585] hover:text-white"
+              section === id ? "text-white border-b-2 border-[#8b5cf6]" : "text-[#858585] hover:text-white"
             }`}
           >
             {label}
@@ -103,7 +103,7 @@ export function MusicPanel({ onInsert }: Props) {
               <button
                 key={s.label}
                 onClick={() => onInsert(s.code)}
-                className="w-full text-left px-3 py-1.5 text-[12px] text-[#cccccc] hover:bg-[#2a2d2e]"
+                className="w-full text-left px-3 py-1.5 text-[12px] text-[#cccccc] hover:bg-[#1a1a22]"
               >
                 {s.label}
               </button>
@@ -117,11 +117,11 @@ export function MusicPanel({ onInsert }: Props) {
 
 function Item({ label, mono, onPlay, onInsert }: { label: string; mono: string; onPlay: () => void; onInsert: () => void }) {
   return (
-    <div className="group flex items-center gap-1 px-2 py-1 hover:bg-[#2a2d2e]">
+    <div className="group flex items-center gap-1 px-2 py-1 hover:bg-[#1a1a22]">
       <button
         title="Ouvir"
         onClick={onPlay}
-        className="w-6 h-6 flex items-center justify-center rounded bg-[#0e639c] hover:bg-[#1177bb] text-white shrink-0"
+        className="w-6 h-6 flex items-center justify-center rounded bg-[#7c5cff] hover:bg-[#6d4df0] text-white shrink-0"
       >
         <Play size={11} fill="currentColor" />
       </button>

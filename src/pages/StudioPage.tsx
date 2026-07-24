@@ -95,7 +95,7 @@ export function StudioPage() {
   };
 
   return (
-    <div className="flex flex-col bg-[#1e1e1e] text-white overflow-hidden" style={{ height: "calc(100vh - 4rem)" }}>
+    <div className="flex flex-col bg-[#0d0d12] text-white overflow-hidden" style={{ height: "calc(100vh - 4rem)" }}>
       <div className="flex flex-1 min-h-0">
         <ActivityBar active={activeBar} onSelect={handleActivity} />
 

@@ -19,7 +19,7 @@ const ITEMS: { id: string; icon: LucideIcon; label: string }[] = [
 
 export function ActivityBar({ active, onSelect }: Props) {
   return (
-    <div className="w-12 bg-[#333333] flex flex-col items-center shrink-0 border-r border-black/40">
+    <div className="w-12 bg-[#0a0a0e] flex flex-col items-center shrink-0 border-r border-black/40">
       {ITEMS.map((it) => {
         const Icon = it.icon;
         const isActive = active === it.id;

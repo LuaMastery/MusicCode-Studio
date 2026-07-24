@@ -1,24 +1,26 @@
 /**
- * SettingsContext — preferências globais (cor de destaque, idioma).
- * Mantido enxuto; a prioridade do app é o som.
+ * SettingsContext — preferências globais (cor de destaque).
+ * Paleta minimalista e refinada; violeta por padrão.
  */
 import { createContext, useContext, useState, type ReactNode } from "react";
 
 export interface Accent {
   id: string;
   name: string;
-  gradient: string;
+  hex: string;
   text: string;
-  ring: string;
   bg: string;
+  ring: string;
+  border: string;
+  gradient: string;
 }
 
 const ACCENTS: Accent[] = [
-  { id: "violet", name: "Violeta", gradient: "from-violet-500 to-fuchsia-500", text: "text-violet-400", ring: "ring-violet-500", bg: "bg-violet-500/10" },
-  { id: "cyan", name: "Ciano", gradient: "from-cyan-500 to-blue-500", text: "text-cyan-400", ring: "ring-cyan-500", bg: "bg-cyan-500/10" },
-  { id: "emerald", name: "Esmeralda", gradient: "from-emerald-500 to-teal-500", text: "text-emerald-400", ring: "ring-emerald-500", bg: "bg-emerald-500/10" },
-  { id: "rose", name: "Rosa", gradient: "from-rose-500 to-pink-500", text: "text-rose-400", ring: "ring-rose-500", bg: "bg-rose-500/10" },
-  { id: "amber", name: "Âmbar", gradient: "from-amber-500 to-orange-500", text: "text-amber-400", ring: "ring-amber-500", bg: "bg-amber-500/10" },
+  { id: "violet",  name: "Violeta",  hex: "#8b5cf6", text: "text-violet-400",  bg: "bg-violet-500/10",  ring: "ring-violet-500/40",  border: "border-violet-500/30",  gradient: "from-violet-500 to-violet-700" },
+  { id: "indigo",  name: "Índigo",   hex: "#6366f1", text: "text-indigo-400",  bg: "bg-indigo-500/10",  ring: "ring-indigo-500/40",  border: "border-indigo-500/30",  gradient: "from-indigo-500 to-indigo-700" },
+  { id: "blue",    name: "Azul",     hex: "#3b82f6", text: "text-blue-400",    bg: "bg-blue-500/10",    ring: "ring-blue-500/40",    border: "border-blue-500/30",    gradient: "from-blue-500 to-blue-700" },
+  { id: "emerald", name: "Esmeralda",hex: "#10b981", text: "text-emerald-400", bg: "bg-emerald-500/10", ring: "ring-emerald-500/40", border: "border-emerald-500/30", gradient: "from-emerald-500 to-emerald-700" },
+  { id: "rose",    name: "Rosa",     hex: "#f43f5e", text: "text-rose-400",    bg: "bg-rose-500/10",    ring: "ring-rose-500/40",    border: "border-rose-500/30",    gradient: "from-rose-500 to-rose-700" },
 ];
 
 interface SettingsValue {
@@ -32,11 +34,8 @@ const SettingsContext = createContext<SettingsValue | null>(null);
 export function SettingsProvider({ children }: { children: ReactNode }) {
   const [accentId, setAccentId] = useState("violet");
   const accent = ACCENTS.find((a) => a.id === accentId) ?? ACCENTS[0];
-
   return (
-    <SettingsContext.Provider
-      value={{ accent, accents: ACCENTS, setAccent: setAccentId }}
-    >
+    <SettingsContext.Provider value={{ accent, accents: ACCENTS, setAccent: setAccentId }}>
       {children}
     </SettingsContext.Provider>
   );

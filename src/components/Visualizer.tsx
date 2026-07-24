@@ -11,7 +11,7 @@ interface Props {
   bare?: boolean;
 }
 
-export function Visualizer({ active, accent = "#007acc", bare = false }: Props) {
+export function Visualizer({ active, accent = "#8b5cf6", bare = false }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {

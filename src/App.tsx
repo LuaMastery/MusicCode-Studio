@@ -1,8 +1,8 @@
 /**
- * App — shell do MusicCode Studio: navegação + seletor de cor + páginas.
+ * App — shell minimalista do MusicCode Studio.
  */
 import { useState } from "react";
-import { Music2, Home, Code2, Globe, BookOpen, Palette } from "lucide-react";
+import { Music2, Home, Code2, Globe, BookOpen } from "lucide-react";
 import { HomePage } from "./pages/HomePage";
 import { StudioPage } from "./pages/StudioPage";
 import { HtmlStudioPage } from "./pages/HtmlStudioPage";
@@ -14,7 +14,6 @@ export type Page = "home" | "studio" | "html" | "about";
 export default function App() {
   const { accent, accents, setAccent } = useSettings();
   const [page, setPage] = useState<Page>("home");
-  const [paletteOpen, setPaletteOpen] = useState(false);
 
   const navigate = (p: Page) => {
     setPage(p);
@@ -23,26 +22,29 @@ export default function App() {
 
   const NAV: { id: Page; label: string; icon: typeof Home }[] = [
     { id: "home", label: "Início", icon: Home },
-    { id: "studio", label: "Studio JS", icon: Code2 },
-    { id: "html", label: "Studio HTML", icon: Globe },
+    { id: "studio", label: "Studio", icon: Code2 },
+    { id: "html", label: "HTML", icon: Globe },
     { id: "about", label: "Sobre", icon: BookOpen },
   ];
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-ink">
       {/* NAV */}
-      <header className="sticky top-0 z-40 backdrop-blur-xl bg-[#0a0a14]/80 border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center gap-4">
-          <button onClick={() => navigate("home")} className="flex items-center gap-2 shrink-0">
-            <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${accent.gradient} flex items-center justify-center shadow-lg`}>
-              <Music2 size={18} className="text-white" />
-            </div>
-            <span className="font-black text-white text-lg hidden sm:block">
-              MusicCode <span className={accent.text}>Studio</span>
+      <header className="sticky top-0 z-40 backdrop-blur-xl bg-ink/70 border-b border-line">
+        <div className="max-w-6xl mx-auto px-5 h-14 flex items-center gap-6">
+          <button onClick={() => navigate("home")} className="flex items-center gap-2.5 shrink-0">
+            <span
+              className="w-7 h-7 rounded-lg flex items-center justify-center shadow-lg"
+              style={{ background: accent.hex, boxShadow: `0 4px 20px -4px ${accent.hex}` }}
+            >
+              <Music2 size={15} className="text-white" />
+            </span>
+            <span className="font-bold text-[15px] tracking-tight text-white">
+              MusicCode<span className="text-muted"> Studio</span>
             </span>
           </button>
 
-          <nav className="flex items-center gap-1 mx-auto">
+          <nav className="flex items-center gap-1">
             {NAV.map((n) => {
               const Icon = n.icon;
               const active = page === n.id;
@@ -50,48 +52,30 @@ export default function App() {
                 <button
                   key={n.id}
                   onClick={() => navigate(n.id)}
-                  className={`flex items-center gap-1.5 px-3 md:px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition-all ${
-                    active
-                      ? "bg-white/10 text-white"
-                      : "text-gray-500 hover:text-gray-200 hover:bg-white/5"
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[13px] font-medium transition-all ${
+                    active ? "text-white bg-white/[0.06]" : "text-muted hover:text-white"
                   }`}
                 >
-                  <Icon size={15} />
-                  <span className="hidden md:block">{n.label}</span>
+                  <Icon size={14} style={active ? { color: accent.hex } : undefined} />
+                  <span className="hidden sm:block">{n.label}</span>
                 </button>
               );
             })}
           </nav>
 
-          {/* Paleta de cores */}
-          <div className="relative shrink-0">
-            <button
-              onClick={() => setPaletteOpen((o) => !o)}
-              className="w-9 h-9 rounded-xl border border-white/10 bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors"
-              title="Mudar cor"
-            >
-              <Palette size={16} className="text-gray-300" />
-            </button>
-            {paletteOpen && (
-              <>
-                <div className="fixed inset-0 z-40" onClick={() => setPaletteOpen(false)} />
-                <div className="absolute right-0 mt-2 z-50 bg-[#12101f] border border-white/10 rounded-2xl p-3 shadow-2xl">
-                  <div className="text-[10px] text-gray-500 uppercase tracking-widest mb-2 px-1">Cor de destaque</div>
-                  <div className="flex flex-col gap-1">
-                    {accents.map((a) => (
-                      <button
-                        key={a.id}
-                        onClick={() => { setAccent(a.id); setPaletteOpen(false); }}
-                        className={`flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs hover:bg-white/5 ${accent.id === a.id ? "bg-white/10" : ""}`}
-                      >
-                        <span className={`w-5 h-5 rounded-md bg-gradient-to-br ${a.gradient}`} />
-                        <span className="text-gray-300">{a.name}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </>
-            )}
+          {/* Acentos (pontos minimalistas) */}
+          <div className="ml-auto hidden md:flex items-center gap-1.5">
+            {accents.map((a) => (
+              <button
+                key={a.id}
+                title={a.name}
+                onClick={() => setAccent(a.id)}
+                className={`w-3.5 h-3.5 rounded-full transition-all ${
+                  accent.id === a.id ? "ring-2 ring-offset-2 ring-offset-ink scale-110" : "opacity-50 hover:opacity-100"
+                }`}
+                style={{ background: a.hex, boxShadow: accent.id === a.id ? `0 0 0 1px ${a.hex}` : undefined }}
+              />
+            ))}
           </div>
         </div>
       </header>
@@ -105,9 +89,9 @@ export default function App() {
       </main>
 
       {/* FOOTER */}
-      <footer className="border-t border-white/10 py-6 text-center">
-        <p className="text-xs text-gray-600">
-          MusicCode Studio · Crie música com programação · Web Audio API + Capacitor
+      <footer className="border-t border-line py-6">
+        <p className="text-center text-xs text-faint">
+          MusicCode Studio · Crie música com programação · feito com Web Audio API
         </p>
       </footer>
     </div>
