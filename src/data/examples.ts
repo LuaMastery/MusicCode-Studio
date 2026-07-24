@@ -49,7 +49,7 @@ function drum(name,amp){var c=ac();var t=c.currentTime;amp=amp==null?0.8:amp;
  else if(name==='tom'){var o=c.createOscillator(),g=c.createGain();o.frequency.setValueAtTime(220,t);o.frequency.exponentialRampToValueAtTime(110,t+0.2);g.gain.setValueAtTime(amp,t);g.gain.exponentialRampToValueAtTime(0.0001,t+0.25);o.connect(g).connect(c.destination);o.start(t);o.stop(t+0.27);}}
 `;
 
-function page(body: string, script: string, extra = "", title = "MusicCode Studio"): string {
+function page(body: string, script: string, extra = "", title = "Sonora"): string {
   return `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>${title}</title><style>${CSS}${extra}</style></head><body>${body}<script>${AUDIO}${script}</script></body></html>`;
 }
 

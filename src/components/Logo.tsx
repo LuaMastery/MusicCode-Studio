@@ -1,5 +1,5 @@
 /**
- * Logo — marcador oficial do MusicCode Studio.
+ * Logo — marcador oficial do Sonora.
  * Um equalizador (barras de áudio) dentro de um badge arredondado na cor de destaque:
  * lê instantaneamente como "música/áudio" e combina com a estética minimalista.
  */
@@ -28,7 +28,7 @@ export function Logo({ size = 32, color = "#8b5cf6", animated = false, className
       fill="none"
       className={className}
       role="img"
-      aria-label="MusicCode Studio"
+      aria-label="Sonora"
     >
       <defs>
         <linearGradient id={gid} x1="0" y1="0" x2="0" y2="1">

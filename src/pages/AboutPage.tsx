@@ -25,7 +25,7 @@ export function AboutPage({ navigate }: { navigate: (p: Page) => void }) {
     <div className="max-w-3xl mx-auto px-5 py-16">
       <h1 className="text-4xl font-extrabold tracking-tight text-white mb-3">Sobre & Referência</h1>
       <p className="text-muted leading-relaxed mb-12 max-w-2xl">
-        O MusicCode Studio é uma plataforma para <span className="text-white">criar música usando código</span>.
+        O <span className="text-white">Sonora</span> é uma plataforma para <span className="text-white">criar música usando código</span>.
         Inspirado no <span style={{ color: accent.hex }}>Sonic Pi</span>, transforma JavaScript e HTML em som —
         com um motor de áudio próprio sobre a Web Audio API. Funciona como site e como app nativo (Capacitor).
       </p>

@@ -77,7 +77,7 @@ export function BottomPanel({ logs, onClear, playing, tab, onTab, collapsed, onC
 function Terminal({ logs, playing }: { logs: string[]; playing: boolean }) {
   return (
     <div className="p-3 text-[#cccccc]">
-      <div className="text-[#6a9955]">MusicCode Studio — Terminal musical 🎵</div>
+      <div className="text-[#6a9955]">Sonora — Terminal musical 🎵</div>
       <div className="text-[#858585] mb-2">Digite código e clique em Executar. Funções: play, sleep, tambor, synth, bpm...</div>
       {logs.map((l, i) => (
         <div key={i} className={`whitespace-pre-wrap break-words ${l.startsWith("❌") ? "text-[#f48771]" : "text-[#4ec9b0]"}`}>

@@ -1,5 +1,5 @@
 /**
- * engine.ts — Núcleo do motor de áudio do MusicCode Studio.
+ * engine.ts — Núcleo do motor de áudio do Sonora.
  *
  * Tudo é construído sobre a Web Audio API. Esta classe é um singleton que:
  *  - mantém um AudioContext (criado sob demanda, após um gesto do usuário)

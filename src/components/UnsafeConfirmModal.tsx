@@ -37,7 +37,7 @@ export function UnsafeConfirmModal({ open, onConfirm, onCancel }: Props) {
           <AlertTriangle size={16} className="text-red-400 mt-0.5 shrink-0" />
           <p className="text-[12px] text-red-200/90 leading-snug">
             <span className="font-bold text-red-300">Cuidado com golpes:</span> se algum HTML,
-            instrumento ou "site" dentro do MusicCode Studio pedir para você{" "}
+            instrumento ou "site" dentro do Sonora pedir para você{" "}
             <span className="font-semibold">desativar a segurança</span>, desconfie — pode ser golpe.
             HTMLs confiáveis não precisam disso.
           </p>

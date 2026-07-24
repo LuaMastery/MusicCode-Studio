@@ -1,5 +1,5 @@
 /**
- * App — shell minimalista do MusicCode Studio.
+ * App — shell minimalista do Sonora.
  * Logo + navegação + fundo animado + gaveta de aparência.
  */
 import { useState } from "react";
@@ -42,9 +42,7 @@ export default function App() {
         <div className="max-w-6xl mx-auto px-5 h-14 flex items-center gap-6">
           <button onClick={() => navigate("home")} className="flex items-center gap-2.5 shrink-0">
             <Logo size={28} color={accent.hex} />
-            <span className="font-bold text-[15px] tracking-tight text-white">
-              MusicCode<span className="text-muted"> Studio</span>
-            </span>
+            <span className="font-bold text-[16px] tracking-tight text-white">Sonora</span>
           </button>
 
           <nav className="flex items-center gap-1">
@@ -90,7 +88,7 @@ export default function App() {
       {/* FOOTER */}
       <footer className="relative z-10 border-t border-line py-6">
         <p className="text-center text-xs text-faint">
-          MusicCode Studio · Crie música com programação · feito com Web Audio API
+          Sonora · Crie música com programação · feito com Web Audio API
         </p>
       </footer>
 

@@ -1,5 +1,5 @@
 /**
- * api.ts — A API musical pública do MusicCode Studio (estilo Sonic Pi).
+ * api.ts — A API musical pública do Sonora (estilo Sonic Pi).
  *
  * O usuário escreve JavaScript chamando estas funções e ouve música:
  *

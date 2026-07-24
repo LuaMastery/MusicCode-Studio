@@ -15,7 +15,7 @@ export function StatusBar({ synth, bpm, playing, ln, col }: Props) {
   return (
     <div className="h-6 bg-[#8b5cf6] text-white flex items-center text-[12px] shrink-0 select-none">
       <div className="flex items-center gap-1.5 px-3 h-full hover:bg-white/15 transition-colors">
-        <Music2 size={13} /> MusicCode Studio
+        <Music2 size={13} /> Sonora
       </div>
       <div className="flex items-center gap-1.5 px-3 h-full hover:bg-white/15 transition-colors">
         <span className="opacity-80">🎹</span> {synth}
