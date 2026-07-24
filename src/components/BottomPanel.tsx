@@ -1,26 +1,27 @@
 /**
  * BottomPanel — painel inferior estilo VS Code com abas:
  * TERMINAL (logs) · VISUAL (visualizador) · PROBLEMAS (erros) · SAÍDA (ajuda/API).
+ * Estado controlado (tab + collapsed) para integração com a barra de atividades.
  */
-import { useState } from "react";
 import { Trash2, ChevronDown, ChevronUp, Terminal as TermIcon, Activity, AlertCircle, BookOpen } from "lucide-react";
 import { Visualizer } from "./Visualizer";
+
+export type PanelTab = "terminal" | "visual" | "problems" | "output";
 
 interface Props {
   logs: string[];
   onClear: () => void;
   playing: boolean;
+  tab: PanelTab;
+  onTab: (t: PanelTab) => void;
+  collapsed: boolean;
+  onCollapsed: (c: boolean) => void;
 }
 
-type Tab = "terminal" | "visual" | "problems" | "output";
-
-export function BottomPanel({ logs, onClear, playing }: Props) {
-  const [tab, setTab] = useState<Tab>("terminal");
-  const [collapsed, setCollapsed] = useState(false);
-
+export function BottomPanel({ logs, onClear, playing, tab, onTab, collapsed, onCollapsed }: Props) {
   const hasError = logs.some((l) => l.startsWith("❌"));
 
-  const TABS: { id: Tab; label: string; icon: typeof TermIcon; badge?: number }[] = [
+  const TABS: { id: PanelTab; label: string; icon: typeof TermIcon; badge?: number }[] = [
     { id: "terminal", label: "Terminal", icon: TermIcon, badge: logs.length || undefined },
     { id: "visual", label: "Visualizador", icon: Activity },
     { id: "problems", label: "Problemas", icon: AlertCircle, badge: hasError ? 1 : undefined },
@@ -29,7 +30,6 @@ export function BottomPanel({ logs, onClear, playing }: Props) {
 
   return (
     <div className="bg-[#1e1e1e] border-t border-black/40 flex flex-col shrink-0" style={{ height: collapsed ? 32 : 230 }}>
-      {/* Cabeçalho com abas */}
       <div className="flex items-center bg-[#252526] border-b border-black/30 shrink-0">
         {TABS.map((t) => {
           const Icon = t.icon;
@@ -37,7 +37,7 @@ export function BottomPanel({ logs, onClear, playing }: Props) {
           return (
             <button
               key={t.id}
-              onClick={() => { setTab(t.id); setCollapsed(false); }}
+              onClick={() => { onTab(t.id); onCollapsed(false); }}
               className={`relative flex items-center gap-1.5 px-3 h-8 text-[11px] font-semibold uppercase tracking-wide transition-colors ${
                 isActive ? "text-white" : "text-[#858585] hover:text-white"
               }`}
@@ -56,19 +56,16 @@ export function BottomPanel({ logs, onClear, playing }: Props) {
               <Trash2 size={13} />
             </button>
           )}
-          <button onClick={() => setCollapsed((c) => !c)} title={collapsed ? "Expandir" : "Recolher"} className="text-[#858585] hover:text-white p-1.5">
+          <button onClick={() => onCollapsed(!collapsed)} title={collapsed ? "Expandir" : "Recolher"} className="text-[#858585] hover:text-white p-1.5">
             {collapsed ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
           </button>
         </div>
       </div>
 
-      {/* Conteúdo */}
       {!collapsed && (
         <div className="flex-1 min-h-0 overflow-auto font-mono text-[12.5px] leading-relaxed custom-scroll">
           {tab === "terminal" && <Terminal logs={logs} playing={playing} />}
-          {tab === "visual" && (
-            <div className="h-full p-2"><Visualizer bare active={playing} accent="#4ec9b0" /></div>
-          )}
+          {tab === "visual" && <div className="h-full p-2"><Visualizer bare active={playing} accent="#4ec9b0" /></div>}
           {tab === "problems" && <Problems logs={logs} />}
           {tab === "output" && <OutputHelp />}
         </div>

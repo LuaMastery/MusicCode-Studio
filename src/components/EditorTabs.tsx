@@ -1,7 +1,7 @@
 /**
- * EditorTabs — barra de abas do editor + controles de execução (Play/BPM/Volume).
+ * EditorTabs — barra de abas do editor + controles de execução (Play/BPM/Volume/Save).
  */
-import { Play, Square, Circle, Volume2, RotateCcw } from "lucide-react";
+import { Play, Square, Circle, Volume2, RotateCcw, Save } from "lucide-react";
 
 interface Props {
   filename: string;
@@ -13,11 +13,15 @@ interface Props {
   onBpmChange: (v: number) => void;
   volume: number;
   onVolumeChange: (v: number) => void;
+  onSave: () => void;
   onReset: () => void;
+  isExample: boolean;
+  dirty: boolean;
 }
 
 export function EditorTabs({
-  filename, icon, playing, onPlay, onStop, bpm, onBpmChange, volume, onVolumeChange, onReset,
+  filename, icon, playing, onPlay, onStop, bpm, onBpmChange, volume, onVolumeChange,
+  onSave, onReset, isExample, dirty,
 }: Props) {
   return (
     <div className="bg-[#252526] border-b border-black/40 flex items-stretch shrink-0">
@@ -25,9 +29,17 @@ export function EditorTabs({
       <div className="flex items-center gap-2 pl-3 pr-4 py-2 bg-[#1e1e1e] border-r border-black/40 border-t-2 border-t-[#007acc] -mb-px">
         <span>{icon}</span>
         <span className="text-[13px] text-white">{filename}</span>
-        <button onClick={onReset} title="Restaurar exemplo" className="text-[#858585] hover:text-white ml-1">
-          <RotateCcw size={12} />
-        </button>
+        {dirty && <span className="w-1.5 h-1.5 rounded-full bg-white" title="Não salvo" />}
+        <div className="flex items-center gap-1 ml-1">
+          <button onClick={onSave} title="Salvar (Ctrl+S)" className="text-[#858585] hover:text-white">
+            <Save size={13} />
+          </button>
+          {isExample && dirty && (
+            <button onClick={onReset} title="Restaurar exemplo" className="text-[#858585] hover:text-white">
+              <RotateCcw size={12} />
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Controles à direita */}

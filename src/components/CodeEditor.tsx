@@ -2,18 +2,21 @@
  * CodeEditor — editor estilo VS Code.
  * Realce de sintaxe via pano de fundo (<pre>) sobre um <textarea> transparente,
  * com gutter de numeração de linhas e cursor (Ln, Col) rastreado.
- *
- * - language="js"  → realce de sintaxe JavaScript (tema Dark+)
- * - language="text"→ texto puro (para HTML/outros)
- * - minHeight      → quando informado, usa altura fixa (caso contrário preenche o container)
+ * Expõe insert()/focus() via ref e dispara onSave no Ctrl+S.
  */
-import { useMemo, useRef } from "react";
+import { forwardRef, useImperativeHandle, useMemo, useRef } from "react";
 import { highlightJS } from "../utils/highlight";
+
+export interface CodeEditorHandle {
+  insert: (text: string) => void;
+  focus: () => void;
+}
 
 interface Props {
   value: string;
   onChange: (v: string) => void;
   onCursor?: (ln: number, col: number) => void;
+  onSave?: () => void;
   fontSize?: number;
   language?: "js" | "text";
   minHeight?: number;
@@ -25,7 +28,10 @@ function escapePlain(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-export function CodeEditor({ value, onChange, onCursor, fontSize = 13, language = "js", minHeight }: Props) {
+export const CodeEditor = forwardRef<CodeEditorHandle, Props>(function CodeEditor(
+  { value, onChange, onCursor, onSave, fontSize = 13, language = "js", minHeight },
+  ref
+) {
   const taRef = useRef<HTMLTextAreaElement>(null);
   const preRef = useRef<HTMLPreElement>(null);
   const gutterRef = useRef<HTMLDivElement>(null);
@@ -55,7 +61,31 @@ export function CodeEditor({ value, onChange, onCursor, fontSize = 13, language 
     onCursor(parts.length, parts[parts.length - 1].length + 1);
   };
 
+  useImperativeHandle(ref, () => ({
+    insert: (text: string) => {
+      const ta = taRef.current;
+      if (!ta) return;
+      const s = ta.selectionStart;
+      const e = ta.selectionEnd;
+      const next = value.slice(0, s) + text + value.slice(e);
+      onChange(next);
+      requestAnimationFrame(() => {
+        ta.focus();
+        const pos = s + text.length;
+        ta.selectionStart = ta.selectionEnd = pos;
+        syncScroll();
+        handleCursor();
+      });
+    },
+    focus: () => taRef.current?.focus(),
+  }), [value, onChange]);
+
   const handleKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") {
+      e.preventDefault();
+      onSave?.();
+      return;
+    }
     if (e.key === "Tab") {
       e.preventDefault();
       const ta = e.currentTarget;
@@ -86,7 +116,6 @@ export function CodeEditor({ value, onChange, onCursor, fontSize = 13, language 
 
   return (
     <div className={rootClass} style={rootStyle}>
-      {/* Gutter */}
       <div
         ref={gutterRef}
         className="overflow-hidden select-none bg-[#1e1e1e] text-right text-[#858585] shrink-0"
@@ -97,7 +126,6 @@ export function CodeEditor({ value, onChange, onCursor, fontSize = 13, language 
         ))}
       </div>
 
-      {/* Código */}
       <div className="relative flex-1 min-w-0">
         <pre
           ref={preRef}
@@ -126,4 +154,4 @@ export function CodeEditor({ value, onChange, onCursor, fontSize = 13, language 
       </div>
     </div>
   );
-}
+});
