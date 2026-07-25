@@ -48,5 +48,6 @@ export function decodeShare(input: string): SharePayload | null {
 
 export function shareLink(code: string): string {
   const base = location.origin + location.pathname;
-  return base + "#s=" + encodeURIComponent(code);
+  // ?html=1 faz o App.tsx abrir a página HTML ao carregar o link
+  return base + "?html=1#s=" + encodeURIComponent(code);
 }

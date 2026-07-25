@@ -99,7 +99,7 @@ export function HtmlStudioPage() {
   // import + share
   const [importVal, setImportVal] = useState("");
   const [importMsg, setImportMsg] = useState<string | null>(null);
-  const [shareInfo, setShareInfo] = useState<{ code: string; link: string } | null>(null);
+  const [shareInfo, setShareInfo] = useState<{ code: string; link: string; copyable: boolean } | null>(null);
   const [copied, setCopied] = useState(false);
 
   // importa automaticamente se a URL tiver #s=...
@@ -110,7 +110,8 @@ export function HtmlStudioPage() {
         addShared({ name: p.n, icon: p.i, description: p.d, code: p.c, copyable: p.cp });
         setTab("public");
       }
-      history.replaceState(null, "", location.pathname + location.search);
+      // Limpa tanto ?html=1 quanto #s=... para não reimportar ao recarregar
+      history.replaceState(null, "", location.pathname);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -149,7 +150,7 @@ export function HtmlStudioPage() {
 
   const doShare = (p: { name: string; icon: string; description?: string; code: string; copyable: boolean }) => {
     const code = encodeShare({ v: 1, n: p.name, i: p.icon, d: p.description, c: p.code, cp: p.copyable });
-    setShareInfo({ code, link: shareLink(code) });
+    setShareInfo({ code, link: shareLink(code), copyable: p.copyable });
     setCopied(false);
   };
 
@@ -159,6 +160,24 @@ export function HtmlStudioPage() {
     addShared({ name: p.n, icon: p.i, description: p.d, code: p.c, copyable: p.cp });
     setImportMsg(`✅ "${p.n}" importado!`);
     setImportVal("");
+  };
+
+  const copyHtml = async (code: string) => {
+    try {
+      await navigator.clipboard.writeText(code);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch { /* fallback silencioso */ }
+  };
+
+  const downloadHtml = (name: string, code: string) => {
+    const blob = new Blob([code], { type: "text/html;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${safeFileName(name)}.html`;
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   // ── EDITOR ────────────────────────────────────────────────────────────────
@@ -238,7 +257,13 @@ export function HtmlStudioPage() {
                 <button onClick={() => setEPreview(false)} className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-[12px] font-medium ${!ePreview ? "bg-white/[0.07] text-white" : "text-muted hover:text-white"}`}><Code2 size={13} /> Código</button>
                 <button onClick={() => setEPreview(true)} className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-[12px] font-medium ${ePreview ? "bg-white/[0.07] text-white" : "text-muted hover:text-white"}`}><Eye size={13} /> Preview</button>
               </div>
-              <button data-sfx="success" onClick={handleSave} className="ml-auto flex items-center gap-1.5 text-[12px] font-bold text-white px-4 py-1.5 rounded-lg" style={{ background: accent.hex }}>
+              <button data-sfx="success" onClick={() => copyHtml(eCode)} className="flex items-center gap-1.5 text-[12px] text-muted hover:text-white px-3 py-1.5" title="Copiar HTML">
+                <Code2 size={13} /> {copied ? "Copiado!" : "Copiar"}
+              </button>
+              <button data-sfx="success" onClick={() => downloadHtml(eName, eCode)} className="flex items-center gap-1.5 text-[12px] text-muted hover:text-white px-3 py-1.5" title="Baixar .html">
+                <Download size={13} /> Baixar
+              </button>
+              <button data-sfx="success" onClick={handleSave} className="flex items-center gap-1.5 text-[12px] font-bold text-white px-4 py-1.5 rounded-lg" style={{ background: accent.hex }}>
                 <Save size={13} /> Salvar
               </button>
             </div>
@@ -294,6 +319,16 @@ export function HtmlStudioPage() {
                 <button onClick={() => setShowCode(true)} className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-[12px] font-medium ${showCode ? "bg-white/[0.07] text-white" : "text-muted hover:text-white"}`}><Code2 size={13} /> Código</button>
               </div>
             )}
+            {canViewCode && (
+              <>
+                <button data-sfx="success" onClick={() => copyHtml(viewing.code)} className="flex items-center gap-1 text-[12px] text-muted hover:text-white" title="Copiar HTML">
+                  <Code2 size={13} /> {copied ? "Copiado!" : "Copiar HTML"}
+                </button>
+                <button data-sfx="success" onClick={() => downloadHtml(viewing.name, viewing.code)} className="flex items-center gap-1 text-[12px] text-muted hover:text-white" title="Baixar .html">
+                  <Download size={13} /> Baixar .html
+                </button>
+              </>
+            )}
             <button data-sfx="open" onClick={() => setRunKey((k) => k + 1)} title="Reiniciar" className="flex items-center gap-1.5 text-[12px] font-medium text-white px-3 py-1.5 rounded-lg" style={{ background: accent.hex }}>
               <Play size={12} fill="currentColor" />
             </button>
@@ -302,6 +337,11 @@ export function HtmlStudioPage() {
         <div className="flex-1 min-h-0 bg-ink">
           {showCode && canViewCode ? (
             <div className="h-full flex flex-col">
+              <div className="flex items-center gap-2 px-4 py-2 border-b border-line bg-card/40">
+                <span className="text-[11px] text-faint">Código fonte</span>
+                <button data-sfx="success" onClick={() => copyHtml(viewing.code)} className="ml-auto flex items-center gap-1 text-[11px] text-muted hover:text-white"><Code2 size={12} /> {copied ? "Copiado!" : "Copiar"}</button>
+                <button data-sfx="success" onClick={() => downloadHtml(viewing.name, viewing.code)} className="flex items-center gap-1 text-[11px] text-muted hover:text-white"><Download size={12} /> Baixar</button>
+              </div>
               <pre className="flex-1 overflow-auto p-5 text-[12px] font-mono text-[#c4c4cc] leading-relaxed"><code>{viewing.code}</code></pre>
             </div>
           ) : !canViewCode && showCode ? (
@@ -507,7 +547,7 @@ function Card({ p, onOpen, actions }: { p: Playable; onOpen: () => void; actions
   );
 }
 
-function ShareBox({ info, copied, setCopied, onClose }: { info: { code: string; link: string }; copied: boolean; setCopied: (v: boolean) => void; onClose: () => void }) {
+function ShareBox({ info, copied, setCopied, onClose }: { info: { code: string; link: string; copyable: boolean }; copied: boolean; setCopied: (v: boolean) => void; onClose: () => void }) {
   const copy = (text: string) => { navigator.clipboard?.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 1800); };
   return (
     <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
@@ -518,15 +558,27 @@ function ShareBox({ info, copied, setCopied, onClose }: { info: { code: string; 
           <h3 className="text-[15px] font-bold text-white">Compartilhar HTML</h3>
           <button data-sfx="close" onClick={onClose} className="ml-auto text-muted hover:text-white"><X size={16} /></button>
         </div>
-        <p className="text-[12px] text-muted mb-3">Envie o <span className="text-white">código</span> ou o <span className="text-white">link</span>. Quem receber cola na aba <span className="text-white">HTMLs públicos → Importar</span>.</p>
+        <p className="text-[12px] text-muted mb-3">Envie o <span className="text-white">link</span>. Quem receber cola na aba <span className="text-white">HTMLs públicos → Importar</span>.</p>
         <label className="text-[11px] uppercase tracking-wide text-faint">Link</label>
         <div className="flex gap-2 mt-1 mb-3">
           <input readOnly value={info.link} className="flex-1 min-w-0 bg-ink border border-line rounded-lg px-2 py-1.5 text-[11px] text-white font-mono" />
           <button data-sfx="click" onClick={() => copy(info.link)} className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-white" style={{ background: "var(--color-brand)" }}>{copied ? "✓" : "Copiar"}</button>
         </div>
-        <label className="text-[11px] uppercase tracking-wide text-faint">Código</label>
-        <textarea readOnly value={info.code} rows={3} className="mt-1 w-full bg-ink border border-line rounded-lg px-2 py-1.5 text-[10px] text-white font-mono resize-none" />
+        {info.copyable ? (
+          <>
+            <label className="text-[11px] uppercase tracking-wide text-faint">Código (base64)</label>
+            <textarea readOnly value={info.code} rows={3} className="mt-1 w-full bg-ink border border-line rounded-lg px-2 py-1.5 text-[10px] text-white font-mono resize-none" />
+          </>
+        ) : (
+          <div className="mt-3 rounded-lg border border-amber-500/30 bg-amber-500/[0.07] p-3 text-[12px] text-amber-200/80 leading-snug">
+            🔒 Código protegido — o link permite importar e tocar, mas o código não será exibido na interface.
+          </div>
+        )}
       </div>
     </div>
   );
+}
+
+function safeFileName(name: string): string {
+  return name.replace(/[^a-zA-Z0-9_\-]/g, "_").slice(0, 60) || "html";
 }

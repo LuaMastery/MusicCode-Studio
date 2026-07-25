@@ -18,7 +18,11 @@ export type Page = "home" | "studio" | "html" | "about";
 
 export default function App() {
   const { accent, openDrawer } = useSettings();
-  const [page, setPage] = useState<Page>("home");
+  const [page, setPage] = useState<Page>(() => {
+    // Se a URL contém #s=... ou ?html=1, abre o Studio HTML direto
+    if (location.hash.includes("s=") || location.search.includes("html=1")) return "html";
+    return "home";
+  });
   useSfxGlobal();
 
   const navigate = (p: Page) => {
@@ -68,11 +72,11 @@ export default function App() {
           <button
             data-sfx="open"
             onClick={openDrawer}
-            title="Aparência"
+            title="Configurações"
             className="ml-auto flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[13px] font-medium text-muted hover:text-white border border-line hover:bg-white/[0.04] transition-all"
           >
             <SlidersHorizontal size={14} />
-            <span className="hidden sm:block">Aparência</span>
+            <span className="hidden sm:block">Configurações</span>
           </button>
         </div>
       </header>

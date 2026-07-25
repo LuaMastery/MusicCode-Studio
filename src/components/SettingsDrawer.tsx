@@ -54,7 +54,7 @@ export function SettingsDrawer() {
       {/* painel */}
       <aside className="relative w-[340px] max-w-[90vw] bg-panel border-l border-line h-full overflow-auto animate-slideIn shadow-2xl">
         <div className="sticky top-0 bg-panel/90 backdrop-blur border-b border-line px-5 h-14 flex items-center justify-between z-10">
-          <h2 className="text-[15px] font-bold text-white">Aparência</h2>
+          <h2 className="text-[15px] font-bold text-white">Configurações</h2>
           <button onClick={closeDrawer} data-sfx="close" className="text-muted hover:text-white"><X size={18} /></button>
         </div>
 
