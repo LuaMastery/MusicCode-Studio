@@ -1,0 +1,7 @@
+# Artefatos de build de testes (gerados por `npm test`)
+scripts/out/
+
+# Sistema
+.DS_Store
+Thumbs.db
+*.log

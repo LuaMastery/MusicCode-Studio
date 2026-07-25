@@ -19,6 +19,41 @@ Isso é **100% compatível com o GitHub Pages**.
 
 ---
 
+## ✅ Método recomendado — Pasta `/docs`
+
+Este método mantém o código-fonte limpo (o `npm run dev` segue funcionando) e publica
+o site pronto a partir da pasta `/docs`. É o método mais simples e confiável.
+
+### 1. Gerar o build de Pages
+
+```bash
+npm run build:pages      # gera a pasta docs/ (index.html autossuficiente + .nojekyll)
+```
+
+> Esse comando compila o app num único `docs/index.html` e adiciona o `.nojekyll`.
+
+### 2. Apontar o GitHub Pages para a pasta `/docs`
+
+1. No repositório, vá em **Settings → Pages**
+2. Em **Source → Deploy from a branch**:
+   - **Branch:** `main` (após o merge do PR) — *ou* `arena/019f9607-musiccode-studio` para ver agora
+   - **Pasta:** selecione **`/docs`** (não `/root`)
+3. Clique em **Save**
+
+> ⚠️ Importante: a configuração antiga apontava para **`/` (root)**, que serve o
+> `index.html` fonte (não executável) — por isso o site ficava em branco.
+> Usar a pasta **`/docs`** resolve isso.
+
+### 3. Aguardar o build
+
+Em 1–2 minutos o site estará no ar em:
+
+```
+https://luamastery.github.io/MusicCode-Studio/
+```
+
+---
+
 ## 📋 Passo a Passo
 
 ### 1. Instalar as dependências
@@ -154,6 +189,53 @@ npm install
 npm run build
 ```
 Rode esses comandos novamente e verifique o log de erros.
+
+#### `Cannot find module @rollup/rollup-linux-x64-gnu`
+Bug conhecido do npm com dependências opcionais. Solução rápida:
+```bash
+npm i @rollup/rollup-linux-x64-gnu --no-save
+npm run build
+```
+(Ou simplesmente rode `npm install` novamente.)
+
+#### `vite: Permission denied`
+Os binários em `node_modules/.bin` podem ficar sem permissão de execução. Rode o build via Node:
+```bash
+node node_modules/vite/bin/vite.js build
+```
+
+---
+
+## 📱 Publicar como aplicativo nativo (Capacitor)
+
+O mesmo projeto vira um app **Android (.apk)** ou **iOS**. Pré-requisitos:
+**Android Studio** (+ JDK) para Android, **Xcode no macOS** para iOS.
+
+### 1. Instalar as plataformas (uma vez)
+```bash
+npm i -D @capacitor/android @capacitor/ios
+```
+
+### 2. Gerar o build web
+```bash
+npm run build
+```
+
+### 3. Adicionar a plataforma
+```bash
+npx cap add android   # ou: npx cap add ios
+npx cap sync          # copia o dist/ para o projeto nativo
+```
+
+### 4. Abrir e compilar
+```bash
+npx cap open android  # abre no Android Studio
+# No Android Studio: Build → Build Bundle(s)/APK(s) → Build APK(s)
+```
+
+O `capacitor.config.ts` já está configurado (`webDir: "dist"`, `appId`, `appName`).
+Como o `vite-plugin-singlefile` gera um `index.html` autossuficiente, o app funciona
+offline no WebView sem precisar de servidor.
 
 ---
 
