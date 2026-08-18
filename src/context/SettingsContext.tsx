@@ -83,7 +83,7 @@ export const TRANSLATIONS: Record<Language, Record<TranslationKey, string>> = {
     available: "Disponíveis", deprecated: "Descontinuadas", all: "Todas", installedOnly: "Instaladas",
     templates: "Templates", editor: "Editor", language: "Idioma", theme: "Tema", appearance: "Aparência",
     audio: "Áudio", accessibility: "Acessibilidade", save: "Salvar", reset: "Resetar", cancel: "Cancelar",
-    settingsTitle: "Configurações", settingsSubtitle: "Personalize sua experiência no MusicCode Studio",
+    settingsTitle: "Configurações", settingsSubtitle: "Personalize sua experiência na Sonora",
     noNotes: "Nenhuma nota encontrada", error: "Erro", success: "Sucesso", warning: "Aviso", info: "Info",
     notes: "Notas", start: "Começar", howItWorks: "Como Funciona",
   },
@@ -95,7 +95,7 @@ export const TRANSLATIONS: Record<Language, Record<TranslationKey, string>> = {
     available: "Available", deprecated: "Deprecated", all: "All", installedOnly: "Installed",
     templates: "Templates", editor: "Editor", language: "Language", theme: "Theme", appearance: "Appearance",
     audio: "Audio", accessibility: "Accessibility", save: "Save", reset: "Reset", cancel: "Cancel",
-    settingsTitle: "Settings", settingsSubtitle: "Customize your MusicCode Studio experience",
+    settingsTitle: "Settings", settingsSubtitle: "Customize your Sonora experience",
     noNotes: "No notes found", error: "Error", success: "Success", warning: "Warning", info: "Info",
     notes: "Notes", start: "Get Started", howItWorks: "How It Works",
   },
@@ -107,7 +107,7 @@ export const TRANSLATIONS: Record<Language, Record<TranslationKey, string>> = {
     available: "Disponibles", deprecated: "Obsoletas", all: "Todas", installedOnly: "Instaladas",
     templates: "Plantillas", editor: "Editor", language: "Idioma", theme: "Tema", appearance: "Apariencia",
     audio: "Audio", accessibility: "Accesibilidad", save: "Guardar", reset: "Restablecer", cancel: "Cancelar",
-    settingsTitle: "Ajustes", settingsSubtitle: "Personaliza tu experiencia en MusicCode Studio",
+    settingsTitle: "Ajustes", settingsSubtitle: "Personaliza tu experiencia en Sonora",
     noNotes: "No se encontraron notas", error: "Error", success: "Éxito", warning: "Advertencia", info: "Info",
     notes: "Notas", start: "Comenzar", howItWorks: "Cómo Funciona",
   },
@@ -119,7 +119,7 @@ export const TRANSLATIONS: Record<Language, Record<TranslationKey, string>> = {
     available: "Disponibles", deprecated: "Obsolètes", all: "Toutes", installedOnly: "Installées",
     templates: "Modèles", editor: "Éditeur", language: "Langue", theme: "Thème", appearance: "Apparence",
     audio: "Audio", accessibility: "Accessibilité", save: "Enregistrer", reset: "Réinitialiser", cancel: "Annuler",
-    settingsTitle: "Paramètres", settingsSubtitle: "Personnalisez votre expérience MusicCode Studio",
+    settingsTitle: "Paramètres", settingsSubtitle: "Personnalisez votre expérience Sonora",
     noNotes: "Aucune note trouvée", error: "Erreur", success: "Succès", warning: "Avertissement", info: "Info",
     notes: "Notes", start: "Commencer", howItWorks: "Comment ça marche",
   },
@@ -131,7 +131,7 @@ export const TRANSLATIONS: Record<Language, Record<TranslationKey, string>> = {
     available: "Verfügbar", deprecated: "Veraltet", all: "Alle", installedOnly: "Installiert",
     templates: "Vorlagen", editor: "Editor", language: "Sprache", theme: "Thema", appearance: "Erscheinungsbild",
     audio: "Audio", accessibility: "Barrierefreiheit", save: "Speichern", reset: "Zurücksetzen", cancel: "Abbrechen",
-    settingsTitle: "Einstellungen", settingsSubtitle: "Passen Sie Ihr MusicCode Studio-Erlebnis an",
+    settingsTitle: "Einstellungen", settingsSubtitle: "Passen Sie Ihr Sonora-Erlebnis an",
     noNotes: "Keine Noten gefunden", error: "Fehler", success: "Erfolg", warning: "Warnung", info: "Info",
     notes: "Noten", start: "Loslegen", howItWorks: "Wie es funktioniert",
   },
@@ -143,7 +143,7 @@ export const TRANSLATIONS: Record<Language, Record<TranslationKey, string>> = {
     available: "利用可能", deprecated: "非推奨", all: "すべて", installedOnly: "インストール済み",
     templates: "テンプレート", editor: "エディター", language: "言語", theme: "テーマ", appearance: "外観",
     audio: "オーディオ", accessibility: "アクセシビリティ", save: "保存", reset: "リセット", cancel: "キャンセル",
-    settingsTitle: "設定", settingsSubtitle: "MusicCode Studioの体験をカスタマイズ",
+    settingsTitle: "設定", settingsSubtitle: "Sonoraの体験をカスタマイズ",
     noNotes: "音符が見つかりません", error: "エラー", success: "成功", warning: "警告", info: "情報",
     notes: "音符", start: "始める", howItWorks: "使い方",
   },
@@ -202,13 +202,13 @@ const Ctx = createContext<SettingsCtx | null>(null);
 export function SettingsProvider({ children }: { children: ReactNode }) {
   const [settings, setSettings] = useState<Settings>(() => {
     try {
-      const saved = localStorage.getItem("musiccode-settings");
+      const saved = localStorage.getItem("sonora-settings") ?? localStorage.getItem("musiccode-settings");
       return saved ? { ...DEFAULT, ...JSON.parse(saved) } : DEFAULT;
     } catch { return DEFAULT; }
   });
 
   useEffect(() => {
-    localStorage.setItem("musiccode-settings", JSON.stringify(settings));
+    localStorage.setItem("sonora-settings", JSON.stringify(settings));
     // Aplicar font-size no root
     const sizes = { sm: "14px", md: "16px", lg: "18px", xl: "20px" };
     document.documentElement.style.fontSize = sizes[settings.fontSize];

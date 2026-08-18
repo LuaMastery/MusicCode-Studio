@@ -16,7 +16,7 @@ export const luaTemplates: Template[] = [
     description: "Toca uma sequência de notas musicais usando frequências.",
     language: "lua",
     preview: "🎵 Dó Ré Mi Fá Sol...",
-    code: `-- 🎵 MusicCode Studio - Melodia em Lua
+    code: `-- 🎵 Sonora - Melodia em Lua
 -- Notas musicais com suas frequências (Hz)
 local notas = {
   Do  = 261.63,
@@ -177,7 +177,7 @@ export const javaTemplates: Template[] = [
     description: "Gera e toca tons usando javax.sound.sampled.",
     language: "java",
     preview: "🔊 Java Sound API",
-    code: `// 🎵 MusicCode Studio - Sintetizador em Java
+    code: `// 🎵 Sonora - Sintetizador em Java
 import javax.sound.sampled.*;
 import java.util.*;
 
@@ -385,7 +385,7 @@ public class PianoVirtual extends JFrame {
     };
 
     public PianoVirtual() throws Exception {
-        super("🎹 Piano Virtual - MusicCode Studio");
+        super("🎹 Piano Virtual - Sonora");
 
         // Inicializa sintetizador MIDI
         Synthesizer synth = MidiSystem.getSynthesizer();
@@ -484,7 +484,7 @@ export const htmlTemplates: Template[] = [
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>🎹 Piano Web - MusicCode Studio</title>
+  <title>🎹 Piano Web - Sonora</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -663,7 +663,7 @@ export const htmlTemplates: Template[] = [
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>🎵 Visualizador Musical - MusicCode Studio</title>
+  <title>🎵 Visualizador Musical - Sonora</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -885,7 +885,7 @@ export const htmlTemplates: Template[] = [
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>🥁 Beat Maker - MusicCode Studio</title>
+  <title>🥁 Beat Maker - Sonora</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {

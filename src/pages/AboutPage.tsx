@@ -27,9 +27,9 @@ export default function AboutPage({ navigate }: { navigate: (p: any) => void }) 
           Documentação Completa
         </div>
         <h1 className="text-5xl md:text-6xl font-black text-white leading-tight mb-4">
-          Sobre o{" "}
+          Sobre a{" "}
           <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
-            MusicCode Studio
+            Sonora
           </span>
         </h1>
         <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
@@ -68,14 +68,14 @@ export default function AboutPage({ navigate }: { navigate: (p: any) => void }) 
             🎵
           </div>
           <div>
-            <h2 className="text-2xl font-black text-white">O que é o MusicCode Studio?</h2>
+            <h2 className="text-2xl font-black text-white">O que é a Sonora?</h2>
             <p className="text-xs text-purple-400 font-semibold uppercase tracking-widest">Visão Geral</p>
           </div>
         </div>
 
         <div className="rounded-2xl border border-purple-500/20 bg-purple-500/5 p-6 mb-5 leading-relaxed text-gray-300">
           <p className="mb-4">
-            <span className="text-white font-bold">MusicCode Studio</span> é uma plataforma web interativa que combina
+            <span className="text-white font-bold">Sonora</span> é uma plataforma web interativa que combina
             <span className="text-purple-400 font-semibold"> programação</span> com{" "}
             <span className="text-pink-400 font-semibold">música</span>. O objetivo é permitir que qualquer pessoa —
             programador ou músico — consiga criar, compor e reproduzir sons e melodias
@@ -198,7 +198,7 @@ export default function AboutPage({ navigate }: { navigate: (p: any) => void }) 
             {
               icon: "🌙", name: "Lua", color: "border-blue-500/30 bg-blue-500/5", badge: "bg-blue-500/20 text-blue-300",
               status: "Disponível",
-              desc: "Lua é uma linguagem de script leve e poderosa. No MusicCode Studio, você usa variáveis e tabelas para definir notas e durações. É ideal para melodias simples e padrões rítmicos.",
+              desc: "Lua é uma linguagem de script leve e poderosa. Na Sonora, você usa variáveis e tabelas para definir notas e durações. É ideal para melodias simples e padrões rítmicos.",
               exemplo: `local notas = {"Do", "Re", "Mi", "Fa", "Sol"}\nlocal duracoes = {0.5, 0.5, 0.5, 0.5, 1.0}`,
               tags: ["Melodias", "Ritmos", "Escalas", "BPM"],
             },
@@ -456,14 +456,14 @@ tocarNota(261.63, 0.5);
             🚀
           </div>
           <div>
-            <h2 className="text-2xl font-black text-white">Propósito do MusicCode Studio</h2>
+            <h2 className="text-2xl font-black text-white">Propósito da Sonora</h2>
             <p className="text-xs text-violet-400 font-semibold uppercase tracking-widest">Missão & Visão</p>
           </div>
         </div>
 
         <div className="rounded-2xl border border-violet-500/20 bg-violet-500/5 p-6 mb-5">
           <p className="text-gray-300 leading-relaxed text-sm mb-4">
-            O <span className="text-white font-bold">MusicCode Studio</span> nasceu com um propósito claro:
+            A <span className="text-white font-bold">Sonora</span> nasceu com um propósito claro:
             <span className="text-violet-400 font-semibold"> democratizar a criação musical através da programação</span>.
             Acreditamos que toda pessoa que sabe um pouco de código tem o potencial de criar música —
             e toda pessoa que ama música tem um motivo a mais para aprender a programar.
@@ -529,11 +529,11 @@ tocarNota(261.63, 0.5);
               Rhuan De Cillo Silva
             </h2>
             <p className="text-purple-400 font-semibold text-sm mb-4">
-              Desenvolvedor & Idealizador do MusicCode Studio
+              Desenvolvedor & Idealizador da Sonora
             </p>
 
             <div className="max-w-lg mx-auto text-sm text-gray-400 leading-relaxed mb-6">
-              Apaixonado por tecnologia e música, Rhuan criou o MusicCode Studio com a visão de
+              Apaixonado por tecnologia e música, Rhuan criou a Sonora com a visão de
               unir o mundo da programação com o universo musical. O projeto nasceu do desejo de
               tornar a criação musical acessível a todos através do código.
             </div>
@@ -579,7 +579,7 @@ tocarNota(261.63, 0.5);
           <div className="flex items-center gap-3">
             <Music2 size={20} className="text-purple-400" />
             <div>
-              <div className="text-sm font-bold text-white">MusicCode Studio</div>
+              <div className="text-sm font-bold text-white">Sonora</div>
               <div className="text-xs text-gray-500">Versão 1.0.0 · 2025</div>
             </div>
           </div>

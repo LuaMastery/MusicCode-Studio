@@ -52,7 +52,7 @@ const luaTemplates: WorkshopTemplate[] = [
     name: "🎵 Melodia Simples",
     description: "Sequência de notas com frequências Hz",
     audioMode: "lua",
-    code: `-- 🎵 MusicCode Studio — Melodia em Lua
+    code: `-- 🎵 Sonora — Melodia em Lua
 local notas = {
   Do=261.63, Re=293.66, Mi=329.63,
   Fa=349.23, Sol=392.00, La=440.00,
@@ -264,7 +264,7 @@ public class Piano extends JFrame {
   static final String[] NMS={"Dó","Dó#","Ré","Ré#","Mi","Fá","Fá#","Sol","Sol#","Lá","Lá#","Si"};
 
   public Piano() throws Exception {
-    super("🎹 Piano — MusicCode");
+    super("🎹 Piano — Sonora");
     Synthesizer sy=MidiSystem.getSynthesizer();sy.open();
     ch=sy.getChannels()[0];ch.programChange(0);
     JTextArea log=new JTextArea(5,40);
@@ -851,7 +851,7 @@ const pythonTemplates: WorkshopTemplate[] = [
     description: "Sequência de notas com frequências e duração",
     audioMode: "python",
     code: `# 🎵 Melodia Musical em Python
-# MusicCode Studio — Simulador Python
+# Sonora — Simulador Python
 
 # Mapa de notas (nome → frequência Hz)
 notas = {
@@ -894,7 +894,7 @@ reproduzir_melodia(melodia)`,
     description: "Escalas maior, menor, pentatônica e blues em Python",
     audioMode: "python",
     code: `# 🎼 Escalas Musicais em Python
-# MusicCode Studio — Simulador Python
+# Sonora — Simulador Python
 
 import math
 
@@ -949,7 +949,7 @@ print("\\n✅ Todas as escalas processadas!")`,
     description: "Gerador de ritmos com BPM e padrões de bateria",
     audioMode: "python",
     code: `# 🥁 Padrão Rítmico em Python
-# MusicCode Studio — Simulador Python
+# Sonora — Simulador Python
 
 # Configurações
 BPM = 120
@@ -1022,9 +1022,9 @@ export const extensions: Extension[] = [
     name: "Lua",
     fullName: "Lua Music Extension",
     version: "5.4.6",
-    author: "Lua.org / MusicCode",
+    author: "Lua.org / Sonora",
     description: "Suporte à linguagem Lua para composição de melodias, ritmos e escalas musicais.",
-    longDescription: "Adiciona suporte completo à linguagem Lua para o MusicCode Studio. Com ela você pode criar melodias com frequências Hz, gerar padrões rítmicos com BPM configurável e explorar escalas musicais (maior, menor, pentatônica, blues). Inclui 3 templates comentados e player de áudio integrado.",
+    longDescription: "Adiciona suporte completo à linguagem Lua para a Sonora. Com ela você pode criar melodias com frequências Hz, gerar padrões rítmicos com BPM configurável e explorar escalas musicais (maior, menor, pentatônica, blues). Inclui 3 templates comentados e player de áudio integrado.",
     icon: "🌙",
     color: "from-blue-600 to-cyan-500",
     gradient: "from-blue-500 to-cyan-400",
@@ -1047,9 +1047,9 @@ export const extensions: Extension[] = [
     name: "Java",
     fullName: "Java Sound Extension",
     version: "17.0.2",
-    author: "Oracle / MusicCode",
+    author: "Oracle / Sonora",
     description: "Suporte à linguagem Java com javax.sound, MIDI sequencer e piano virtual Swing.",
-    longDescription: "Integra a poderosa Java Sound API ao MusicCode Studio. Permite criar sintetizadores de tom com ondas senoidais, sequenciadores de bateria MIDI completos e pianos virtuais interativos com Java Swing. Inclui 3 templates avançados com comentários didáticos.",
+    longDescription: "Integra a poderosa Java Sound API à Sonora. Permite criar sintetizadores de tom com ondas senoidais, sequenciadores de bateria MIDI completos e pianos virtuais interativos com Java Swing. Inclui 3 templates avançados com comentários didáticos.",
     icon: "☕",
     color: "from-orange-600 to-yellow-500",
     gradient: "from-orange-500 to-yellow-400",
@@ -1072,7 +1072,7 @@ export const extensions: Extension[] = [
     name: "HTML/CSS",
     fullName: "HTML Web Audio Extension",
     version: "5.0",
-    author: "W3C / MusicCode",
+    author: "W3C / Sonora",
     description: "Templates HTML com Web Audio API — roda diretamente no browser com preview ao vivo.",
     longDescription: "Adiciona templates HTML completos com Web Audio API. Todos os templates rodam diretamente no navegador com preview ao vivo. Inclui piano interativo com teclas clicáveis, visualizador de áudio em múltiplos modos e beat maker de 16 passos — tudo sem instalação de runtime externo.",
     icon: "🌐",
@@ -1097,9 +1097,9 @@ export const extensions: Extension[] = [
     name: "JavaScript",
     fullName: "JavaScript Web Audio Extension",
     version: "2.0.0",
-    author: "MusicCode Studio",
+    author: "Sonora",
     description: "Criação musical com JavaScript moderno e Web Audio API — síntese, melodias e ritmos no browser.",
-    longDescription: "Extensão JavaScript atualizada para o MusicCode Studio. Usa a Web Audio API moderna para síntese de som direto no navegador. Crie melodias com osciladores, efeitos de reverb, sequenciadores de bateria e muito mais — tudo em JavaScript puro, sem dependências externas.",
+    longDescription: "Extensão JavaScript atualizada para a Sonora. Usa a Web Audio API moderna para síntese de som direto no navegador. Crie melodias com osciladores, efeitos de reverb, sequenciadores de bateria e muito mais — tudo em JavaScript puro, sem dependências externas.",
     icon: "⚡",
     color: "from-yellow-500 to-amber-400",
     gradient: "from-yellow-500 to-amber-400",
@@ -1122,9 +1122,9 @@ export const extensions: Extension[] = [
     name: "Python",
     fullName: "Python Music Extension",
     version: "2.0.0",
-    author: "MusicCode Studio",
+    author: "Sonora",
     description: "Composição musical em Python com simulação de frequências, escalas e padrões rítmicos.",
-    longDescription: "Extensão Python atualizada para o MusicCode Studio. Escreva código Python para compor melodias, explorar escalas musicais e criar padrões rítmicos. O player do Studio simula a execução e reproduz o áudio diretamente no browser, sem precisar de Python instalado.",
+    longDescription: "Extensão Python atualizada para a Sonora. Escreva código Python para compor melodias, explorar escalas musicais e criar padrões rítmicos. O player do Studio simula a execução e reproduz o áudio diretamente no browser, sem precisar de Python instalado.",
     icon: "🐍",
     color: "from-green-500 to-emerald-400",
     gradient: "from-green-500 to-emerald-400",
@@ -1147,9 +1147,9 @@ export const extensions: Extension[] = [
     name: "Ruby",
     fullName: "Ruby Sonic Pi Extension",
     version: "0.7.0",
-    author: "MusicCode Legacy",
+    author: "Sonora Legacy",
     description: "Integração com Sonic Pi em Ruby — descontinuada por incompatibilidade com browser.",
-    longDescription: "Tentativa de integrar o Sonic Pi (Ruby) ao MusicCode Studio. A extensão foi descontinuada pois o Sonic Pi requer um ambiente de desktop completo e não pode ser executado no browser.",
+    longDescription: "Tentativa de integrar o Sonic Pi (Ruby) à Sonora. A extensão foi descontinuada pois o Sonic Pi requer um ambiente de desktop completo e não pode ser executado no browser.",
     icon: "💎",
     color: "from-red-700 to-rose-600",
     gradient: "from-red-600 to-rose-500",
@@ -1174,7 +1174,7 @@ export const extensions: Extension[] = [
     name: "C#",
     fullName: "C# NAudio Extension",
     version: "0.5.0",
-    author: "MusicCode Legacy",
+    author: "Sonora Legacy",
     description: "Integração com NAudio em C# — apenas Windows, descontinuada.",
     longDescription: "Extensão para criação musical com C# usando a biblioteca NAudio. Descontinuada por ser exclusiva para Windows e requerer instalação do .NET runtime.",
     icon: "⚡",
@@ -1201,7 +1201,7 @@ export const extensions: Extension[] = [
     name: "Kotlin",
     fullName: "Kotlin Android Audio Extension",
     version: "0.4.0",
-    author: "MusicCode Legacy",
+    author: "Sonora Legacy",
     description: "Extensão Kotlin para Android — incompatível com ambiente web.",
     longDescription: "Esta extensão foi desenvolvida para criar apps musicais Android com Kotlin usando a API AudioTrack. Descontinuada por ser incompatível com ambiente web.",
     icon: "🔷",

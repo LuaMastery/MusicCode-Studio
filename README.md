@@ -1,4 +1,4 @@
-# 🎵 MusicCode Studio
+# 🎵 Sonora
 
 > **Crie músicas com programação.** Um ambiente completo para compor, sintetizar e visualizar música usando código — diretamente no navegador, sem instalações.
 
@@ -10,7 +10,7 @@
 
 ## 📋 Índice
 
-1. [O que é o MusicCode Studio](#1-o-que-é-o-musiccode-studio)
+1. [O que é a Sonora](#1-o-que-é-a-sonora)
 2. [Como Funciona — Visão Geral](#2-como-funciona--visão-geral)
 3. [Estrutura do Projeto](#3-estrutura-do-projeto)
 4. [Páginas e Navegação](#4-páginas-e-navegação)
@@ -27,9 +27,9 @@
 
 ---
 
-## 1. O que é o MusicCode Studio
+## 1. O que é a Sonora
 
-O **MusicCode Studio** é uma plataforma web educacional e criativa que une **programação** e **música**. O objetivo é permitir que qualquer pessoa — programador, músico ou curioso — escreva código e ouça o resultado como som real, sintetizado diretamente no navegador.
+A **Sonora** é uma plataforma web educacional e criativa que une **programação** e **música**. O objetivo é permitir que qualquer pessoa — programador, músico ou curioso — escreva código e ouça o resultado como som real, sintetizado diretamente no navegador.
 
 ### Pilares do projeto
 
@@ -53,7 +53,7 @@ O **MusicCode Studio** é uma plataforma web educacional e criativa que une **pr
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                      MUSICCODE STUDIO                            │
+│                           SONORA                             │
 │                                                                  │
 │  1. WORKSHOP          2. STUDIO              3. ÁUDIO            │
 │  ┌──────────────┐    ┌──────────────────┐   ┌────────────────┐  │
@@ -98,7 +98,7 @@ Entrar no site
 ## 3. Estrutura do Projeto
 
 ```
-musiccode-studio/
+sonora/
 ├── index.html                      # Entry point HTML (título do site)
 ├── package.json                    # Dependências do projeto
 ├── vite.config.ts                  # Configuração do Vite
@@ -194,7 +194,7 @@ O site possui **5 páginas** acessíveis pela barra de navegação fixa no topo:
 
 ## 5. O Workshop — Sistema de Extensões
 
-O Workshop é o coração do sistema de extensões do MusicCode Studio. Funciona como uma **loja de plugins** onde você baixa suporte para cada linguagem.
+O Workshop é o coração do sistema de extensões da Sonora. Funciona como uma **loja de plugins** onde você baixa suporte para cada linguagem.
 
 ### Como funciona a instalação
 
@@ -290,7 +290,7 @@ O Studio é onde você realmente **cria música com código**.
 
 ### 🌙 Lua
 
-Lua é uma linguagem de script leve e poderosa, muito usada em jogos. No MusicCode Studio, você usa Lua para descrever melodias, ritmos e escalas musicais.
+Lua é uma linguagem de script leve e poderosa, muito usada em jogos. Na Sonora, você usa Lua para descrever melodias, ritmos e escalas musicais.
 
 **Como o Studio interpreta Lua:**
 O player analisa o código Lua em busca de nomes de notas (`Do`, `Re`, `Mi`, `Fa`, `Sol`, `La`, `Si`) e suas durações, e converte para frequências Hz.
@@ -440,7 +440,7 @@ Python no Studio funciona via **simulação**: o código Python é interpretado 
 
 **Exemplo básico:**
 ```python
-# Melodia em Python — MusicCode Studio
+# Melodia em Python — Sonora
 notas = {
     "Do":  261.63, "Re":  293.66, "Mi":  329.63,
     "Fa":  349.23, "Sol": 392.00, "La":  440.00,
@@ -758,8 +758,8 @@ interface Settings {
 
 ```bash
 # 1. Clone o repositório
-git clone https://github.com/seu-usuario/musiccode-studio.git
-cd musiccode-studio
+git clone https://github.com/seu-usuario/sonora.git
+cd sonora
 
 # 2. Instale as dependências
 npm install
@@ -801,7 +801,7 @@ Nenhuma variável de ambiente é necessária. O projeto funciona 100% no fronten
 ### 👨‍💻 Criador
 
 **Rhuan De Cillo Silva**  
-Criador, idealizador e desenvolvedor principal do MusicCode Studio.
+Criador, idealizador e desenvolvedor principal da Sonora.
 
 ---
 
@@ -840,6 +840,6 @@ MIT License — sinta-se livre para usar, modificar e distribuir.
 
 ---
 
-*MusicCode Studio — Onde a programação encontra a música. 🎵*
+*Sonora — Onde a programação encontra a música. 🎵*
 
 *Criado com ❤️ por **Rhuan De Cillo Silva***

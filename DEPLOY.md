@@ -1,4 +1,4 @@
-# 🚀 Como Publicar o MusicCode Studio no GitHub Pages
+# 🚀 Como Publicar a Sonora no GitHub Pages
 
 Guia completo para hospedar o site no GitHub Pages **sem erros de pasta**.
 
@@ -6,7 +6,7 @@ Guia completo para hospedar o site no GitHub Pages **sem erros de pasta**.
 
 ## ✅ Por que não há problema de pastas?
 
-O MusicCode Studio usa o plugin **`vite-plugin-singlefile`**, que compila **todo o site em um único arquivo `index.html`** — sem subpastas, sem arquivos JS separados, sem arquivos CSS separados. Tudo fica embutido (inline) dentro do `index.html`.
+A Sonora usa o plugin **`vite-plugin-singlefile`**, que compila **todo o site em um único arquivo `index.html`** — sem subpastas, sem arquivos JS separados, sem arquivos CSS separados. Tudo fica embutido (inline) dentro do `index.html`.
 
 Quando você rodar `npm run build`, a pasta `dist/` terá apenas:
 
@@ -39,7 +39,7 @@ Isso gera a pasta `dist/` com o `index.html` completo.
 
 1. Acesse [github.com](https://github.com) e faça login
 2. Clique em **"New repository"**
-3. Nomeie o repositório (ex: `musiccode-studio`)
+3. Nomeie o repositório (ex: `sonora`)
 4. Deixe como **público**
 5. Clique em **"Create repository"**
 
@@ -50,9 +50,9 @@ No terminal, dentro da pasta do projeto:
 ```bash
 git init
 git add .
-git commit -m "🎵 MusicCode Studio — primeiro deploy"
+git commit -m "🎵 Sonora — primeiro deploy"
 git branch -M main
-git remote add origin https://github.com/SEU_USUARIO/musiccode-studio.git
+git remote add origin https://github.com/SEU_USUARIO/sonora.git
 git push -u origin main
 ```
 
@@ -110,7 +110,7 @@ Isso vai:
 Em alguns minutos o site estará disponível em:
 
 ```
-https://SEU_USUARIO.github.io/musiccode-studio/
+https://SEU_USUARIO.github.io/sonora/
 ```
 
 ---
@@ -160,4 +160,4 @@ Rode esses comandos novamente e verifique o log de erros.
 ## 👤 Criado por
 
 **Rhuan De Cillo Silva**  
-MusicCode Studio — Crie músicas com programação 🎵
+Sonora — Crie músicas com programação 🎵

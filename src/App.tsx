@@ -234,8 +234,7 @@ export default function App() {
               <Music2 size={settings.compactMode ? 14 : 18} className="text-white" />
             </div>
             <span className={`${settings.compactMode ? "text-base" : "text-lg"} font-black text-white tracking-tight hidden sm:block`}>
-              Music<span className={accent.text}>Code</span>
-              <span className="text-pink-400"> Studio</span>
+              Sono<span className={accent.text}>ra</span>
             </span>
           </button>
 
@@ -306,7 +305,7 @@ export default function App() {
       {/* ── FOOTER ── */}
       <footer className="border-t border-white/5 px-4 py-4 text-center" style={{ backgroundColor: themeVars.surface }}>
         <p className="text-xs text-gray-600">
-          🎵 <span className={`${accent.text} font-bold`}>MusicCode Studio</span>
+          🎵 <span className={`${accent.text} font-bold`}>Sonora</span>
           {installed.has("lua")        && <><span className="text-gray-700"> · </span><span className="text-blue-400">Lua</span></>}
           {installed.has("java")       && <><span className="text-gray-700"> · </span><span className="text-orange-400">Java</span></>}
           {installed.has("html")       && <><span className="text-gray-700"> · </span><span className="text-pink-400">HTML</span></>}
