@@ -247,7 +247,7 @@ export default function WorkshopPage({ installed, onInstall, onOpenStudio }: Pro
         </h1>
         <p className="text-gray-400 text-base max-w-2xl mx-auto leading-relaxed">
           Instale suporte a novas linguagens de programação musical.<br />
-          A linguagem <span className="text-purple-400 font-bold">MusicCode</span> já vem instalada.
+          A linguagem <span className="text-purple-400 font-bold">Sonora</span> já vem instalada.
           Outras estão disponíveis ou descontinuadas.
         </p>
       </div>
@@ -351,7 +351,7 @@ export default function WorkshopPage({ installed, onInstall, onOpenStudio }: Pro
               Extensões descontinuadas são versões antigas que não recebem mais atualizações e possuem
               limitações de compatibilidade com o ambiente web. Elas aparecem aqui apenas para referência
               histórica. Para a melhor experiência, use as extensões <strong className="text-white">disponíveis</strong> ou
-              a linguagem <strong className="text-purple-400">MusicCode</strong> nativa.
+              a linguagem <strong className="text-purple-400">Sonora</strong> nativa.
             </p>
           </div>
         </div>

@@ -413,7 +413,7 @@ export default function SettingsPage() {
                 <div className={`w-6 h-6 rounded-lg bg-gradient-to-br ${accent.gradient} flex items-center justify-center`}>
                   <Music2 size={12} className="text-white" />
                 </div>
-                <span className="text-xs font-bold text-white">MusicCode Studio</span>
+                <span className="text-xs font-bold text-white">Sonora</span>
               </div>
               <div className="flex gap-1">
                 {["Início", "Workshop", "Studio"].map((n) => (

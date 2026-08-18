@@ -33,8 +33,7 @@ export default function Header() {
           </div>
           <div>
             <h1 className="text-2xl font-black text-white tracking-tight">
-              Music<span className="text-purple-400">Code</span>{" "}
-              <span className="text-pink-400">Studio</span>
+              Sono<span className="text-purple-400">ra</span>
             </h1>
             <p className="text-xs text-purple-300/70 tracking-widest uppercase">
               Create Music With Code

@@ -186,7 +186,7 @@ export default function StudioPage({ installed, defaultLang, onGoWorkshop }: Pro
     const blob = new Blob([code], { type: meta.mime });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
-    const name = activeTemplate?.name.replace(/[^a-zA-Z0-9]/g, "_") ?? "musiccode";
+    const name = activeTemplate?.name.replace(/[^a-zA-Z0-9]/g, "_") ?? "sonora";
     a.href = url;
     a.download = `${name}.${meta.ext}`;
     a.click();
